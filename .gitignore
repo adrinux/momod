@@ -1,4 +1,7 @@
 
+# Don't commit our custom inventory file
+hosts.ini
+
 # Cache files for sublime text
 *.tmlanguage.cache
 *.tmPreferences.cache
