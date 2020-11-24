@@ -1,0 +1,26 @@
+
+# Cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# TODO add a section here for vscode?
+# Project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+# Ansible
+*.retry
+
+# Ansible Galaxy roles
+roles-galaxy/*/
+roles-github/*/
+
+# Files fetched from the server
+fetched/*
+
+# TODO Change this to vault
+secrets/*
