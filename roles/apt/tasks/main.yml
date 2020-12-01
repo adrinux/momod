@@ -1,0 +1,12 @@
+---
+
+# 3600 seconds is 1 hour
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  tags:
+    - update
+
+- name: Upgrade the installed packages
+  apt: upgrade=dist
+  tags:
+    - update

@@ -1,0 +1,38 @@
+---
+
+# Disallow password authentication
+# Disallow root SSH access
+# Keys only, no password only access
+# Allow empty passwords on keys
+
+- name: Update SSH configuration to be more secure.
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+    - regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+    - regexp: "^UseDNS"
+      line: "UseDNS no"
+    - regexp: "^PermitEmptyPasswords"
+      line: "PermitEmptyPasswords no"
+    - regexp: "^ChallengeResponseAuthentication"
+      line: "ChallengeResponseAuthentication no"
+    - regexp: "^GSSAPIAuthentication"
+      line: "GSSAPIAuthentication no"
+    - regexp: "^X11Forwarding"
+      line: "X11Forwarding no"
+
+
+- name: Allow only defined users to connect via ssh
+  lineinfile: 
+    path: /etc/ssh/sshd_config
+    regexp: "^AllowUsers"
+    line: "AllowUsers {{ ssh_allowed_users | default('') }}"
+    state: present
+    insertafter: EOF
+  notify: restart sshd

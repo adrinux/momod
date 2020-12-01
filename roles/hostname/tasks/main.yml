@@ -1,0 +1,23 @@
+---
+
+# if exists  /etc/cloud/cloud.cfg
+- name: Check if /etc/cloud/cloud.cfg exists
+  stat:
+    path: /etc/cloud/cloud.cfg
+  register: stat_result
+
+# Allows hostname to be altered by the following task
+- name: Set cloud init preserve_hostname to true
+  lineinfile:
+    path: /etc/cloud/cloud.cfg
+    regexp: '^preserve_hostname: false$'
+    line: 'preserve_hostname: true'
+  when: stat_result.stat.exists == true
+
+- name: Set hostname
+  hostname: name={{ hostname }}
+  ignore_errors: true
+  register: hostname_changed
+
+- name: Write hostname and FQDN to /etc/hosts
+  template: src=etc_hosts.j2 dest=/etc/hosts owner=root group=root mode=0064
