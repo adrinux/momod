@@ -17,27 +17,63 @@ Tested with Qemu. Running on Linode VPS and Hetzner VPS.
 
 ## Getting Started
 
-Clone this repository and cd into it:
+### Project Layout
+
+A container directory containing two directories with MOMOD checked out in /momod and your own configuration in /local.
 ```
+/my-momod
+|-/local
+|-/momod
+```
+
+### Setup
+
+Create a containing directory (named as you choose) with children like so:
+```
+mkdir -p my-momod/local/{fetched,files,group_vars,host_vars,secrets}
+```
+cd into 'my-momod' and clone this repository:
+```
+cd my-momod
 git clone https://github.com/adrinux/momod.git
-cd momod
 ```
 
-Copy the inventory file:
+Copy the inventory file template (or create your own) to local:
 
 ```
-cp templates/hosts.ini.template hosts.ini
+cp momod/templates/hosts.ini.template local/hosts.ini
 ```
 
 Edit the inventory file and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those.)
 
 
-Install roles from Ansible Galaxy:
+cd into the momod directory and install roles from Ansible Galaxy and specified Ansible Collections:
 
 ```
+cd momod
 ansible-galaxy install -r requirements.yml
-
 ```
+
+
+At this point you should have a directory structure something like this:
+```
+/my-momod
+|
+|-/local
+| |- hosts.ini
+| |- /fetched
+| |- /files
+| |- /group_vars
+| |- /host_vars
+| |- /secrets
+|
+|-/momod
+| |- /roles
+| |- /roles-collections
+| |- /roles-galaxy
+| |- /templates
+```
+
 
 TODO Add and fill host vars
 TODO Fill out user account data
@@ -53,4 +89,4 @@ It's useful to use a local virtual machine for development (and for practice run
 
 
 ## Sponsor / Donate
-I need to set this up.gws
+I need to set this up.
