@@ -1,7 +1,4 @@
 
-# Don't commit our custom inventory file
-hosts.ini
-
 # Cache files for sublime text
 *.tmlanguage.cache
 *.tmPreferences.cache
@@ -22,8 +19,5 @@ hosts.ini
 roles-galaxy/*/
 roles-github/*/
 
-# Files fetched from the server
-fetched/*
-
-# TODO Change this to vault
-secrets/*
+# Ansible Collections
+collections/*/
