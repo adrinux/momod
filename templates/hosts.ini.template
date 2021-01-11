@@ -1,10 +1,4 @@
 
-
-# Used temporarily for running play-setup on new servers
-[setup]
-192.168.122.21 ; qemu vm made with sausiq
-192.168.122.22 ; qemu vm made with sausiq
-
 [prod]
 
 
