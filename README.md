@@ -11,6 +11,7 @@ Currently:
 - Only Ubuntu Server is supported.
 - Lets Encrypt wildcard DNS support but only via a Gandi.net registered Domain
 - Monolithic Ansible task files unless it really is useful to split tasks into sub-files.
+- Prefer tweaking rather than templating core system config files (so we don't overwrite upstream changes)
 
 Tested with Qemu. Running on Linode VPS and Hetzner VPS.
 
