@@ -19,5 +19,5 @@
   ignore_errors: true
   register: hostname_changed
 
-- name: Write hostname and FQDN to /etc/hosts
+- name: Write hostname and FQDN to /etc/hosts via template
   template: src=etc_hosts.j2 dest=/etc/hosts owner=root group=root mode=0064
