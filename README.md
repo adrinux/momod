@@ -76,6 +76,7 @@ At this point you should have a directory structure something like this:
 | |- /secrets
 |
 |-/momod
+| |- /play
 | |- /roles
 | |- /roles-collections
 | |- /roles-galaxy
