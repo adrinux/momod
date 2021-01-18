@@ -29,7 +29,7 @@
 
 
 - name: Allow only defined users to connect via ssh
-  lineinfile: 
+  lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^AllowUsers"
     line: "AllowUsers {{ ssh_allowed_users | default('') }}"
