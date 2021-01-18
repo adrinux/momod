@@ -26,6 +26,14 @@ A container directory containing two directories with MOMOD checked out in /momo
 |-/momod
 ```
 
+#### An explanation of Project Layout
+By default no local configuration or 'secrets' are present in the /momod directory. Hopefully this keeps development easy and frictionless as well as allowing easy updates (just 'git pull').
+
+Passwords, crypotographic keys and other configuration you don't want to commit to a public VCS repository should all be in the /local directory. I leave it to the user to decide how you will keep this information backed up and if desired under version control.
+
+My personal approach is to init a local git repository but not add a remote and rely on my muliple backup types to guard against disk failure.
+
+
 ### Setup
 
 Create a containing directory (named as you choose) with children like so:
@@ -75,13 +83,10 @@ At this point you should have a directory structure something like this:
 ```
 
 
-TODO Add and fill host vars
-TODO Fill out user account data
-TODO Run setup role
-TODO Run main role
-
-## An explanation of Project Layout
-
+- TODO Add and fill host vars
+- TODO Fill out user account data
+- TODO Run setup role
+- TODO Run main role
 
 ## Development
 
