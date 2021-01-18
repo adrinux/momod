@@ -1,0 +1,45 @@
+---
+
+# This play assumes you have passwordless ssh access setup and working.
+# Add and setup user accounts
+
+- hosts: setup
+  # ssh user and private key vars set in host_vars/all are
+  # overrriden here for this play
+  remote_user: "{{ ansible_user }}"
+  become: yes
+  tasks:
+  # - name: Install Required packages
+  #   apt:
+  #     name: ['git', 'zsh']
+  #     state: present
+
+
+  - name: Allow users in group sudo to sudo without password
+    lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%sudo'
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+
+  - name: Make sure the users accounts are present
+    user: name={{ item.name }} uid={{ item.uid }} password={{ item.passwd }} shell={{ item.shell }} comment="{{ item.comment }}" groups={{ ",".join(item.groups) }} append={{ item.append }}
+    with_items: "{{ users }}"
+
+  - name: Copy user's SSH keys to their authorized_key file
+    authorized_key:
+          user="{{ item.user }}"
+          key="{{ item.key }}"
+    with_items: "{{ keys }}"
+
+
+  # Cleanup
+  # Remove key we added to ubuntu account during setup
+  - name: Cleanup, Remove ssh keys from ubuntu account
+    shell: sudo rm -rf /home/ubuntu/.ssh/authorized_keys
+
+  # Remove key we added to root account during setup
+  - name: Cleanup, Remove ssh keys from root account
+    shell: sudo rm -rf /home/root/.ssh/authorized_keys
