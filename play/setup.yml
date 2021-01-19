@@ -6,7 +6,7 @@
 - hosts: setup
   # ssh user and private key vars set in host_vars/all are
   # overrriden here for this play
-  remote_user: "{{ ansible_user }}"
+  remote_user: "{{ setup_ansible_user }}"
   become: yes
   tasks:
   # - name: Install Required packages

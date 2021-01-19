@@ -11,6 +11,9 @@ fqdn:          server.example.com
 # Remote user to use when running play-setup
 # This is usually ubuntu or root depending on host provider
 setup_ansible_user: "ubuntu"
+
+# normal ansible user is yourself
+ansible_user: your_user_name
 # use your own ssh keys by default
 ansible_ssh_private_key_file: "~/.ssh/id_rsa"
 
