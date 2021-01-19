@@ -1,8 +1,15 @@
-
 [prod]
 
 
 # Development Servers
 [dev]
-192.168.122.21 ; qemu vm made with sausiq
-192.168.122.22 ; qemu vm made with sausiq
+# qemu vm made with sausiq
+192.168.122.21
+# qemu vm made with sausiq
+192.168.122.22
+
+# Temporary group for use with play/setup
+# Remove hosts from this group once setup has run successfully
+[setup]
+192.168.122.21
+192.168.122.22
