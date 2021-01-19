@@ -4,7 +4,8 @@
 # Add and setup user accounts
 
 - hosts: setup
-  remote_user: "{{ setup_ansible_user }}"
+  vars:
+  - ansible_ssh_user: "{{ setup_ansible_user }}"
   become: yes
   tasks:
   # - name: Install Required packages
