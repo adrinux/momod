@@ -31,14 +31,14 @@ By default no local configuration or 'secrets' are present in the /momod directo
 
 Passwords, crypotographic keys and other configuration you don't want to commit to a public VCS repository should all be in the /local directory. I leave it to the user to decide how you will keep this information backed up and if desired under version control.
 
-My personal approach is to init a local git repository but not add a remote and rely on my muliple backup types to guard against disk failure.
+(My personal approach is to init a git repository in /local but not add a remote and rely on my muliple backup types to guard against disk failure. This doesn't allow for easy sync between different devices however.)
 
 
 ### Setup
 
 Create a containing directory (named as you choose) with children like so:
 ```
-mkdir -p my-momod/local/{fetched,files,group_vars,host_vars,secrets}
+mkdir -p my-momod/local/{fetched,files,secrets}
 ```
 cd into 'my-momod' and clone this repository:
 ```
@@ -54,6 +54,12 @@ cp momod/templates/hosts.ini.template local/hosts.ini
 
 Edit the inventory file and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those.)
 
+Copy the group_vars and host_vars templates to local:
+`
+cp -r momod/templates/group_vars local/
+cp -r momod/templates/host_vars local/
+`
+Edit both template files to fit your environment - user name, ssh keys, server name and IP etc.
 
 cd into the momod directory and install roles from Ansible Galaxy and specified Ansible Collections:
 
@@ -61,7 +67,6 @@ cd into the momod directory and install roles from Ansible Galaxy and specified 
 cd momod
 ansible-galaxy install -r requirements.yml
 ```
-
 
 At this point you should have a directory structure something like this:
 ```
@@ -83,10 +88,8 @@ At this point you should have a directory structure something like this:
 | |- /templates
 ```
 
-
-- TODO Add and fill host vars
-- TODO Fill out user account data
-- TODO Run setup role
+### Running the setup playbook
+- TODO Run setup play
 - TODO Run main role
 
 ## Development
