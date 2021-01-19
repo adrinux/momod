@@ -55,11 +55,18 @@ cp momod/templates/hosts.ini.template local/hosts.ini
 Edit the inventory file and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those.)
 
 Copy the group_vars and host_vars templates to local:
-`
+```
 cp -r momod/templates/group_vars local/
 cp -r momod/templates/host_vars local/
-`
-Edit both template files to fit your environment - user name, ssh keys, server name and IP etc.
+```
+Rename `server.example.com.yml` file to match your domain name or in the case of a local VM use the IP address. For example to match the qemu VMs listed in the example `hosts.ini`  create `local/host_vars/192.168.122.21.yml` and `local/host_vars/192.168.122.22.yml`. For a new remote server it may be necessary to use the public IP until your DNS resolves to the new server.
+
+Edit both template files to fit your environment - user name, user password hash, ssh keys, server name and IP etc. The templates are largely self-documenting.
+
+The user account passwords in the vars file must be SHA-512 ($6$) hashes. To generate a password hash via the linux cli you'll need the mkpasswd application, usually a part of the debian whois package. With that installed:
+```
+mkpasswd -m sha-512
+```
 
 cd into the momod directory and install roles from Ansible Galaxy and specified Ansible Collections:
 
