@@ -9,8 +9,8 @@ hostname:      server
 fqdn:          server.example.com
 
 # Remote user to use when running play-setup
-# This is usually ubuntu or root depending on host provider
-setup_ansible_user: "ubuntu"
+# This is usually root or ubuntu depending on host provider
+setup_ansible_user: "root"
 
 # normal ansible user is yourself
 ansible_user: your_user_name
