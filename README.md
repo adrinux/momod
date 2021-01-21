@@ -52,7 +52,7 @@ Copy the inventory file template (or create your own) to local:
 cp momod/templates/hosts.ini.template local/hosts.ini
 ```
 
-Edit the inventory file and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those.)
+Edit hosts.ini and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those). Make sure your new hosts are part of the `[setup]` group as well as any other groups you'd like.
 
 Copy the group_vars and host_vars templates to local:
 ```
@@ -96,7 +96,28 @@ At this point you should have a directory structure something like this:
 ```
 
 ### Running the setup playbook
-- TODO Run setup play
+
+Before you run any play manually connect to your server with ssh to answer the authenticity prompt and save the server to known_hosts. You need to know the default user and should have already configured `setup_ansible_user` in your host_vars file for each server. Using the normal default user of root and our example qemu VMs:
+```
+ssh root@192.168.122.21
+ssh root@192.168.122.22
+```
+
+Check your hosts.ini by listing your hosts. From within the momod directory:
+
+```
+ansible all --list-hosts
+```
+
+Then run the setup playbook:
+
+```
+ansible-playbook play/setup.yml
+```
+The setup playbook specifies the `[setup]` group and will only run on hosts in that group.
+Once setup has run successfully remove your hosts from setup in hosts.ini.
+
+- TODO Test login
 - TODO Run main role
 
 ## Development
