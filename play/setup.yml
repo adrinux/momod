@@ -41,4 +41,4 @@
 
   # Remove key we added to root account during setup
   - name: Cleanup, Remove ssh keys from root account
-    shell: sudo rm -rf /home/root/.ssh/authorized_keys
+    shell: sudo rm -rf /root/.ssh/authorized_keys
