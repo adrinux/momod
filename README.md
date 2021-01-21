@@ -117,8 +117,22 @@ ansible-playbook play/setup.yml
 The setup playbook specifies the `[setup]` group and will only run on hosts in that group.
 Once setup has run successfully remove your hosts from setup in hosts.ini.
 
-- TODO Test login
-- TODO Run main role
+### Test SSH login
+
+Your user account (as defined in host_vars/your-host-ip-or-name.yml) should now be set up. Try logging in:
+
+```
+ssh 192.168.122.21
+ssh 192.168.122.22
+```
+
+### Run the main playbook
+
+The main playbook is intended to do further setup. Update software, automatic software updates, security hardening (sshd, firewall, fail2ban), useful tools etc.
+
+
+
+- TODO Run service roles
 
 ## Development
 
