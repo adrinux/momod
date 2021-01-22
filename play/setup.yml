@@ -7,7 +7,7 @@
   vars:
   - ansible_ssh_user: "{{ setup_ansible_user }}"
   become: yes
-  tasks:
+  pre_tasks:
   # - name: Install Required packages
   #   apt:
   #     name: ['git', 'zsh']
@@ -34,6 +34,11 @@
     with_items: "{{ keys }}"
 
 
+  roles:
+    - sshd
+
+
+  post_tasks:
   # Cleanup
   # Remove key we added to ubuntu account during setup
   - name: Cleanup, Remove ssh keys from ubuntu account
