@@ -8,10 +8,10 @@
   - ansible_ssh_user: "{{ setup_ansible_user }}"
   become: yes
   pre_tasks:
-  # - name: Install Required packages
-  #   apt:
-  #     name: ['git', 'zsh']
-  #     state: present
+  - name: Install Required packages
+    apt:
+      name: ['git','zsh','zsh-syntax-highlighting','zsh-autosuggestions']
+      state: present
 
 
   - name: Allow users in group sudo to sudo without password
