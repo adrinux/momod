@@ -20,13 +20,15 @@ Tested with Qemu. Running on Linode VPS and Hetzner VPS.
 ### Project Layout
 
 A container directory containing two directories with MOMOD checked out in /momod and your own configuration in /local.
-```
+
+```bash
 /my-momod
 |-/local
 |-/momod
 ```
 
 #### An explanation of Project Layout
+
 By default no local configuration or 'secrets' are present in the /momod directory. Hopefully this keeps development easy and frictionless as well as allowing easy updates (just 'git pull').
 
 Passwords, crypotographic keys and other configuration you don't want to commit to a public VCS repository should all be in the /local directory. I leave it to the user to decide how you will keep this information backed up and if desired under version control.
@@ -37,46 +39,53 @@ Passwords, crypotographic keys and other configuration you don't want to commit 
 ### Setup
 
 Create a containing directory (named as you choose) with children like so:
-```
+
+```bash
 mkdir -p my-momod/local/{fetched,files,secrets}
 ```
+
 cd into 'my-momod' and clone this repository:
-```
+
+```bash
 cd my-momod
 git clone https://github.com/adrinux/momod.git
 ```
 
 Copy the inventory file template (or create your own) to local:
 
-```
+```bash
 cp momod/templates/hosts.ini.template local/hosts.ini
 ```
 
 Edit hosts.ini and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those). Make sure your new hosts are part of the `[setup]` group as well as any other groups you'd like.
 
 Copy the group_vars and host_vars templates to local:
-```
+
+```bash
 cp -r momod/templates/group_vars local/
 cp -r momod/templates/host_vars local/
 ```
+
 Rename `server.example.com.yml` file to match your domain name or in the case of a local VM use the IP address. For example to match the qemu VMs listed in the example `hosts.ini`  create `local/host_vars/192.168.122.21.yml` and `local/host_vars/192.168.122.22.yml`. For a new remote server it may be necessary to use the public IP until your DNS resolves to the new server.
 
 Edit both template files to fit your environment - user name, user password hash, ssh keys, server name and IP etc. The templates are largely self-documenting.
 
 The user account passwords in the vars file must be SHA-512 ($6$) hashes. To generate a password hash via the linux cli you'll need the mkpasswd application, usually a part of the debian whois package. With that installed:
-```
+
+```bash
 mkpasswd -m sha-512
 ```
 
 cd into the momod directory and install roles from Ansible Galaxy and specified Ansible Collections:
 
-```
+```bash
 cd momod
 ansible-galaxy install -r requirements.yml
 ```
 
 At this point you should have a directory structure something like this:
-```
+
+```bash
 /my-momod
 |
 |-/local
@@ -98,22 +107,24 @@ At this point you should have a directory structure something like this:
 ### Running the setup playbook
 
 Before you run any play manually connect to your server with ssh to answer the authenticity prompt and save the server to known_hosts. You need to know the default user and should have already configured `setup_ansible_user` in your host_vars file for each server. Using the normal default user of root and our example qemu VMs:
-```
+
+```bash
 ssh root@192.168.122.21
 ssh root@192.168.122.22
 ```
 
 Check your hosts.ini by listing your hosts. From within the momod directory:
 
-```
+```bash
 ansible all --list-hosts
 ```
 
 Then run the setup playbook:
 
-```
+```bash
 ansible-playbook play/setup.yml
 ```
+
 The setup playbook specifies the `[setup]` group and will only run on hosts in that group.
 Once setup has run successfully remove your hosts from setup in hosts.ini.
 
@@ -121,7 +132,7 @@ Once setup has run successfully remove your hosts from setup in hosts.ini.
 
 Your user account (as defined in host_vars/your-host-ip-or-name.yml) should now be set up. Try logging in:
 
-```
+```bash
 ssh 192.168.122.21
 ssh 192.168.122.22
 ```
@@ -140,4 +151,5 @@ It's useful to use a local virtual machine for development (and for practice run
 
 
 ## Sponsor / Donate
+
 I need to set this up.
