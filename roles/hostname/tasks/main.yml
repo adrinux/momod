@@ -1,11 +1,10 @@
 ---
-# if exists  /etc/cloud/cloud.cfg
 - name: Check if /etc/cloud/cloud.cfg exists
   ansible.builtin.stat:
     path: /etc/cloud/cloud.cfg
   register: stat_result
 
-# Allows hostname to be altered by the following task
+# Allows hostname to be altered by the next task
 - name: Set cloud init preserve_hostname
   ansible.builtin.lineinfile:
     path: /etc/cloud/cloud.cfg
