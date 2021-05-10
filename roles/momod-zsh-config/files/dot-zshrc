@@ -1,0 +1,40 @@
+# Use powerline
+USE_POWERLINE="true"
+# Use momod-zsh-conf
+if [[ -e /usr/share/momod/zsh/momod-zsh-config ]]; then
+  source /usr/share/momod/zsh/momod-zsh-config
+fi
+# Use momod-zsh-prompt
+if [[ -e /usr/share/momod/zsh/momod-zsh-prompt-config ]]; then
+  source /usr/share/momod/zsh/momod-zsh-prompt-config
+fi
+
+# zoxide Speedy filesystem navigation
+eval "$(zoxide init zsh)"
+
+# My aliases
+
+# Use exa instead of ls
+TREE_IGNORE="cache|log|logs|node_modules|vendor"
+alias ll='exa -lg --icons'
+alias la='exa -lga --icons'
+alias lt='exa --tree --long -L 2 -I ${TREE_IGNORE}'
+alias ltt='exa --tree --long -L 3 -I ${TREE_IGNORE}'
+alias et='exa --tree -L 2 -I ${TREE_IGNORE}'
+alias ett='exa --tree -L 3 -I ${TREE_IGNORE}'
+
+
+# Update packages on Ubuntu Linux
+if [  -n "$(uname -a | grep Ubuntu)" ]; then
+  alias update="sudo apt update"
+  alias upgrade="sudo apt dist-upgrade"
+fi
+
+# Git aliases
+# Muscle memory inherited from Prezto git module
+# https://github.com/sorin-ionescu/prezto
+alias gws='git status --short'
+alias gwd='git diff --no-ext-diff'
+alias gca='git commit --verbose --all'
+alias gcm='git commit --message'
+alias gp='git push'

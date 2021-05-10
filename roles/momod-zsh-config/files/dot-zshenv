@@ -1,0 +1,9 @@
+# Linux specific
+if [[ $(uname) == 'Linux' ]]; then
+
+  path=(
+    /opt
+    $path
+  )
+
+fi

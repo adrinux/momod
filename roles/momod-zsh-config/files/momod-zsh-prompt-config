@@ -1,0 +1,27 @@
+# Apply different settings for different terminals
+case $(basename "$(cat "/proc/$PPID/comm")") in
+  login)
+      source /usr/local/share/momod/zsh/momod-zsh-prompt
+    	alias x='startx ~/.xinitrc'
+    ;;
+  *)
+      if [[ $TERM == "linux" ]]; then
+        # TTY does not have powerline fonts
+        source /usr/local/share/momod/zsh/momod-zsh-prompt
+        alias x='startx ~/.xinitrc'
+      elif [[ "$USE_POWERLINE" == "true" ]]; then
+        # Use powerline
+        source /usr/local/share/momod/zsh/powerlevel10k/powerlevel10k.zsh-theme
+        [[ ! -f /usr/local/share/momod/zsh/p10k.zsh ]] || source /usr/local/share/momod/zsh/p10k.zsh
+        source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+      else
+        # Don't use powerline anyway
+        source /usr/local/share/momod/zsh/momod-zsh-prompt
+        source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+      fi
+    ;;
+esac

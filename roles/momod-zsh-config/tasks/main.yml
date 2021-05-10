@@ -1,0 +1,76 @@
+---
+- name: Install Zsh & dotfiles related packages
+  ansible.builtin.apt:
+    name:
+      [
+        git,
+        zsh,
+        zsh-syntax-highlighting,
+        zsh-autosuggestions,
+        neovim,
+        zoxide,
+        exa,
+      ]
+    state: present
+
+- name: Create directories for momod Zsh configuration
+  ansible-builtin-file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /usr/local/share/momod/zsh
+    - /usr/local/share/momod/zsh/plugins
+
+- name: Copy momod Zsh config to server
+  ansible-builtin-copy:
+    src: momod-zsh-config
+    dest: /usr/local/share/momod/zsh/momod-zsh-config
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy momod Zsh prompt config to server
+  ansible-builtin-copy:
+    src: momod-zsh-prompt-config
+    dest: /usr/local/share/momod/zsh/momod-zsh-prompt-config
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy momod Zsh prompt to server
+  ansible-builtin-copy:
+    src: momod-zsh-prompt
+    dest: /usr/local/share/momod/zsh/momod-zsh-prompt
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install zsh-history-substring-search plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-history-substring-search.git
+    dest: /usr/local/share/momod/zsh/plugins
+
+- name: Install powerlevel10k
+  ansible.builtin.git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: /usr/local/share/momod/zsh/powerlevel10k
+    depth: 1
+
+- name: Copy powerlevel10k config
+  ansible-builtin-copy:
+    src: p10k.zsh
+    dest: /usr/local/share/momod/zsh/p10k.sh
+    state: present
+    owner: root
+    group: root
+    mode: 0644
+#
+#
+# Copy .zshrc, .zprofile into place for each user
+#- name: Copy userland Zsh config to server
