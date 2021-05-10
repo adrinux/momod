@@ -14,7 +14,7 @@
     state: present
 
 - name: Create directories for momod Zsh configuration
-  ansible-builtin-file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: root
@@ -25,7 +25,7 @@
     - /usr/local/share/momod/zsh/plugins
 
 - name: Copy momod Zsh config to server
-  ansible-builtin-copy:
+  ansible.builtin.copy:
     src: momod-zsh-config
     dest: /usr/local/share/momod/zsh/momod-zsh-config
     state: present
