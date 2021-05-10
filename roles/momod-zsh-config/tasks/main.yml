@@ -34,7 +34,7 @@
     mode: 0644
 
 - name: Copy momod Zsh prompt config to server
-  ansible-builtin-copy:
+  ansible.builtin.copy:
     src: momod-zsh-prompt-config
     dest: /usr/local/share/momod/zsh/momod-zsh-prompt-config
     state: present
@@ -43,7 +43,7 @@
     mode: 0644
 
 - name: Copy momod Zsh prompt to server
-  ansible-builtin-copy:
+  ansible.builtin.copy:
     src: momod-zsh-prompt
     dest: /usr/local/share/momod/zsh/momod-zsh-prompt
     state: present
@@ -63,7 +63,7 @@
     depth: 1
 
 - name: Copy powerlevel10k config
-  ansible-builtin-copy:
+  ansible.builtin.copy:
     src: p10k.zsh
     dest: /usr/local/share/momod/zsh/p10k.sh
     state: present
