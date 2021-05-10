@@ -54,3 +54,9 @@
     - name: Cleanup, Remove ssh keys from root account
       ansible.builtin.shell: sudo rm -rf /root/.ssh/authorized_keys
       when: stat_root_authkeys.stat.exists
+
+    # Restart sshd to read updated config
+    - name: Restart SSHD service
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
