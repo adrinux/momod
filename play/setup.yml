@@ -13,7 +13,7 @@
         state: present
 
     - name: Allow users in group sudo to sudo without password
-      ansible.builtinlineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/sudoers
         state: present
         regexp: "^%sudo"
