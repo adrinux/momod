@@ -84,12 +84,12 @@
     group: "{{ item.name }}"
     mode: 0640
   with_items: "{{ users }}"
-
-- name: Copy .zshenv to user account
-  ansible.builtin.copy:
-    src: dot-zshenv
-    dest: /home/{{ item.name }}/.zshenv
-    owner: "{{ item.name }}"
-    group: "{{ item.name }}"
-    mode: 0640
-  with_items: "{{ users }}"
+# NOT CURRENTLY USED
+# - name: Copy .zshenv to user account
+#   ansible.builtin.copy:
+#     src: dot-zshenv
+#     dest: /home/{{ item.name }}/.zshenv
+#     owner: "{{ item.name }}"
+#     group: "{{ item.name }}"
+#     mode: 0640
+#   with_items: "{{ users }}"
