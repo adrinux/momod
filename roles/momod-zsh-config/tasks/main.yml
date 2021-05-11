@@ -84,6 +84,7 @@
     group: "{{ item.name }}"
     mode: 0640
   with_items: "{{ users }}"
+#
 # NOT CURRENTLY USED
 # - name: Copy .zshenv to user account
 #   ansible.builtin.copy:
