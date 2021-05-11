@@ -1,5 +1,4 @@
 ---
-
 # This file is for variables which apply to all hosts
 
 # Users & their SSH public keys
@@ -8,25 +7,22 @@ users:
     passwd: PASSWORD_HASH_HERE_SEE_DOCS
     comment: "Alice Momod"
     uid: 2000
-    shell: /usr/bin/bash
+    shell: /usr/bin/zsh
     groups:
-    - sudo
-    - adm
-    - www-data
+      - sudo
+      - adm
+      - www-data
     append: yes
 
 keys:
   - user: alice
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-
-
 # geerlingguy.ntp config
-ntp_timezone:  'Europe/London'
+ntp_timezone: "Europe/London"
 ntp_enabled: true
 ntp_manage_config: true
-ntp_area: '.europe'
-
+ntp_area: ".europe"
 
 # Use python3 on managed hosts
 ansible_python_interpreter: /usr/bin/python3

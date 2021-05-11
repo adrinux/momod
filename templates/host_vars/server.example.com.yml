@@ -1,22 +1,22 @@
 ---
-
 # Notes
 # 2vcpu, 4GB RAM, 40GB Disk Local
 
-public_ip:     00.00.00.00
-public_ipv6:   '0000:0000:0000:0000::1'
-hostname:      server
-fqdn:          server.example.com
+public_ip: 00.00.00.00
+public_ipv6: "0000:0000:0000:0000::1"
+hostname: server
+fqdn: server.example.com
 
 # Remote user to use when running play-setup
 # This is usually root or ubuntu depending on host provider
+# NOTE after play-setup has run niether root nor ubuntu have access
+# To rerun setup change this to the same user as ansible_user below
 setup_ansible_user: "root"
 
 # normal ansible user is yourself
 ansible_user: your_user_name
 # use your own ssh keys by default
 ansible_ssh_private_key_file: "~/.ssh/id_rsa"
-
 
 ## Role vars
 ## Defaults are listed but commented out if unchanged ##
@@ -25,4 +25,4 @@ ansible_ssh_private_key_file: "~/.ssh/id_rsa"
 ssh_allowed_users: "alice "
 
 # firewall-ufw role
-firewall_rules: ['allow smtp', 'allow 587/tcp', 'allow http', 'allow https']
+firewall_rules: ["allow smtp", "allow 587/tcp", "allow http", "allow https"]
