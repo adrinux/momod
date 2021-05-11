@@ -62,11 +62,34 @@
 - name: Copy powerlevel10k config
   ansible.builtin.copy:
     src: p10k.zsh
-    dest: /usr/local/share/momod/zsh/p10k.sh
+    dest: /usr/local/share/momod/zsh/p10k.zsh
     owner: root
     group: root
     mode: 0644
-#
-#
-# Copy .zshrc, .zprofile into place for each user
-#- name: Copy userland Zsh config to server
+
+- name: Copy .zshrc to user accounts
+  ansible.builtin.copy:
+    src: dot-zshrc
+    dest: /home/{{ item.name }}/.zshrc
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0640
+  with_items: "{{ users }}"
+
+- name: Copy .zprofile to user accounts
+  ansible.builtin.copy:
+    src: dot-zprofile
+    dest: /home/{{ item.name }}/.zprofile
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0640
+  with_items: "{{ users }}"
+
+- name: Copy .zshenv to user account
+  ansible.builtin.copy:
+    src: dot-zshenv
+    dest: /home/{{ item.name }}/.zshenv
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0640
+  with_items: "{{ users }}"
