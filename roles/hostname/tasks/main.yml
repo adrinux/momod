@@ -14,8 +14,8 @@
 
 - name: Set hostname
   ansible.builtin.hostname:
-    name: { { hostname } }
-    ignore_errors: true
+    name: "{{ hostname }}"
+    use: debian
 
 - name: Write hostname and FQDN to /etc/hosts via template
   ansible.builtin.template:
