@@ -1,12 +1,11 @@
 ---
-
 # Disallow password authentication
 # Disallow root SSH access
-# Keys only, no password only access
+# Keys only, disallow password only access
 # Allow empty passwords on keys
 
 - name: Update SSH configuration to be more secure.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
@@ -27,9 +26,8 @@
     - regexp: "^X11Forwarding"
       line: "X11Forwarding no"
 
-
 - name: Allow only defined users to connect via ssh
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^AllowUsers"
     line: "AllowUsers {{ ssh_allowed_users | default('') }}"
