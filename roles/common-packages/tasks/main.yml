@@ -10,7 +10,7 @@
       - exim4
     state: absent
 
-- name: Install common packages
+- name: Install common packages...be patient!
   ansible.builtin.apt:
     pkg:
       - apticron

@@ -1,5 +1,4 @@
 ---
-
 - hosts: all
   become: yes
   roles:
@@ -8,11 +7,10 @@
     - unattended-upgrades
     - geerlingguy.ntp
     - sshd
+    - common-packages
 
 - hosts: dev
   become: yes
 
-
 - hosts: prod
   become: yes
-
