@@ -1,8 +1,10 @@
 # MOMOD
 
-**This a WIP repo. Don't try to use it yet!**
+**This a WIP repo.**
+**Current Status**
+Can setup up user accounts, hostname , unattended upgrades and harden SSHD.
 
-MOMOD = <u>M</u>aster <u>O</u>f <u>M</u>y <u>O</u>wn <u>D</u>omain
+MOMOD = <u>M</u>aster <u>O</u>f <u>M</u>y <u>O</u>wn <u>D</u>data
 
 Ansible based self-hosting of web sites and web apps with a focus on keeping things simple.
 
@@ -13,7 +15,7 @@ Currently:
 - Monolithic Ansible task files unless it really is useful to split tasks into sub-files.
 - Prefer tweaking rather than templating core system config files (so we don't overwrite upstream changes)
 
-Tested with Qemu. Running on Linode VPS and Hetzner VPS.
+Tested with Qemu. **(eventually)** Running on Linode VPS and Hetzner VPS.
 
 ## Getting Started
 
@@ -68,7 +70,7 @@ cp -r momod/templates/host_vars local/
 
 Rename `server.example.com.yml` file to match your domain name or in the case of a local VM use the IP address. For example to match the qemu VMs listed in the example `hosts.ini`  create `local/host_vars/192.168.122.21.yml` and `local/host_vars/192.168.122.22.yml`. For a new remote server it may be necessary to use the public IP until your DNS resolves to the new server.
 
-Edit both template files to fit your environment - user name, user password hash, ssh keys, server name and IP etc. The templates are largely self-documenting.
+Edit both template files to fit your environment - user name, user password hash, ssh keys, server name and IP etc. The templates are largely self-documenting. You will need to add an IPV6 address in addition to the IPV4.
 
 The user account passwords in the vars file must be SHA-512 ($6$) hashes. To generate a password hash via the linux cli you'll need the mkpasswd application, usually a part of the debian whois package. With that installed:
 
@@ -127,6 +129,7 @@ ansible-playbook play/setup.yml
 
 The setup playbook specifies the `[setup]` group and will only run on hosts in that group.
 Once setup has run successfully remove your hosts from setup in hosts.ini.
+If you ever wish to rerun setup you'll need to change `setup_ansible_user` to your `ansible_user account`, usually yourself.
 
 ### Test SSH login
 
@@ -140,7 +143,6 @@ ssh 192.168.122.22
 ### Run the main playbook
 
 The main playbook is intended to do further setup. Update software, automatic software updates, security hardening (sshd, firewall, fail2ban), useful tools etc.
-
 
 
 - TODO Run service roles
