@@ -9,7 +9,6 @@
     - sshd
     - common-packages
     - geerlingguy.firewall
-    - nginx-light
 
 - hosts: dev
   become: yes

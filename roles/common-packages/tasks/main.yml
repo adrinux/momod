@@ -27,5 +27,6 @@
       - tar
       - zip
       - unzip
+      - nginx-light
     state: present
     update_cache: yes
