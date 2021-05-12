@@ -8,6 +8,7 @@
     - geerlingguy.ntp
     - sshd
     - common-packages
+    - geerlingguy.firewall
 
 - hosts: dev
   become: yes
