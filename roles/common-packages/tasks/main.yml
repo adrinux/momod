@@ -1,0 +1,31 @@
+---
+- name: Remove packages
+  ansible.builtin.apt:
+    pkg:
+      - apache
+      - puppet
+      - mysql-common
+      - mysql-server
+      - mysql-client
+      - exim4
+    state: absent
+
+- name: Install common packages
+  ansible.builtin.apt:
+    pkg:
+      - apticron
+      - bzip2
+      - curl
+      - git
+      - vim
+      - neovim
+      - htop
+      - wget
+      - apache2-utils
+      - php-fpm
+      - rkhunter
+      - tar
+      - zip
+      - unzip
+    state: present
+    update_cache: yes
