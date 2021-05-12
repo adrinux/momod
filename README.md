@@ -2,7 +2,7 @@
 
 **This a WIP repo.**
 **Current Status**
-Can setup up user accounts, hostname , unattended upgrades and harden SSHD.
+Can setup up user accounts, hostname, unattended upgrades and harden SSHD.
 
 MOMOD = <u>M</u>aster <u>O</u>f <u>M</u>y <u>O</u>wn <u>D</u>data
 
@@ -18,6 +18,15 @@ Currently:
 Tested with Qemu. **(eventually)** Running on Linode VPS and Hetzner VPS.
 
 ## Getting Started
+
+### Dependencies
+
+There are couple of dependencies
+
+- [Ansible](https://github.com/ansible/ansible) obviously.
+- Optionally the [Meslo Nerd Font](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k) if you use Zsh. For more information on the Zsh configuration see "Momod Shell Configuration" below.
+
+
 
 ### Project Layout
 
@@ -146,6 +155,13 @@ The main playbook is intended to do further setup. Update software, automatic so
 
 
 - TODO Run service roles
+
+## Momod Shell Configuration
+
+The setup play will run the momod-zsh-config role to set up a powerful and pretty Zsh on the server using [Powerlevel10k](https://github.com/romkatv/powerlevel10k), [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search), [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions), [zoxide](https://github.com/ajeetdsouza/zoxide) and [exa](https://github.com/ogham/exa).
+
+This role adds several useful aliases, see `roles/momod-zsh-config/files/dot-zshrc` for details.
+
 
 ## Development
 
