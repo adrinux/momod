@@ -1,4 +1,8 @@
 ---
+#collections:
+#  - name: nginxinc.nginx_core
+
 # Roles from Ansible Galaxy
-- src: geerlingguy.ntp
-- src: geerlingguy.firewall
+roles:
+  - src: geerlingguy.ntp
+  - src: geerlingguy.firewall
