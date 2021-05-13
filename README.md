@@ -4,7 +4,7 @@
 **Current Status**
 Can setup up user accounts, hostname, unattended upgrades and harden SSHD.
 
-MOMOD = <u>M</u>aster <u>O</u>f <u>M</u>y <u>O</u>wn <u>D</u>data
+MOMOD = **M**aster **O**f **M**y **O**wn **D**ata
 
 Ansible based self-hosting of web sites and web apps with a focus on keeping things simple.
 
