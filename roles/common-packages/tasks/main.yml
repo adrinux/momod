@@ -10,7 +10,7 @@
       - exim4
     state: absent
 
-- name: Install common packages...be patient!
+- name: Installing common packages...be patient!
   ansible.builtin.apt:
     pkg:
       - apticron
@@ -27,6 +27,6 @@
       - tar
       - zip
       - unzip
-      - nginx-light
+      - nginx-full
     state: present
     update_cache: yes
