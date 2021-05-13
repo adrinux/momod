@@ -1,23 +1,29 @@
 ---
-# Change config
 - name: Tweak nginx configuration
   ansible.builtin.lineinfile:
     path: /etc/nginx/nginx.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
     state: present
+    backup: yes
   with_items:
-    - regexp: "^worker_processes auto;"
+    - regexp: "^worker_processes"
       line: "worker_processes {{ ansible_processor_vcpus | default(ansible_processor_count) }};"
-    - regexp: "	worker_connections 768;"
+    - regexp: "	worker_connections"
       line: "	worker_connections 1024;"
-    - regexp: "^	# server_tokens off;"
-      line: "	server_tokens off;\n	client_max_body_size 64m;"
-    - regexp: "^	error_log /var/log/nginx/error.log;"
+    - regexp: "^	error_log /var/log/nginx/error.log"
       line: "	error_log /var/log/nginx/error.log warn;"
-    - regexp: "^	access_log /var/log/nginx/access.log;"
-      line: "	access_log /var/log/nginx/other_vhosts_access.log;"
-#
+
+- name: Add to nginx configuration
+  ansible.builtin.lineinfile:
+    backrefs: yes
+    path: /etc/nginx/nginx.conf
+    regexp: "^	# server_tokens off;"
+    insertafter: "^	# server_tokens off;"
+    line: "	server_tokens off;\n	client_max_body_size 64m;"
+    state: present
+    backup: yes
+
 # validate the tweaked config file
 - name: Validate nginx configuration
   command: nginx -t -c /etc/nginx/nginx.conf
