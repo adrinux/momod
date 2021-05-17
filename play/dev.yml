@@ -1,0 +1,7 @@
+---
+# Used for testing roles during development
+# Testing servers should be added to the testing group on hosts.ini
+- hosts: testing
+  become: yes
+  roles:
+    - powerdns.pdns_recursor
