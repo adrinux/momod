@@ -36,4 +36,4 @@ pdns_rec_config:
     - "172.16.0.0/12"
     - "::1/128"
     - "fe80::/10"
-  local-address: "{{ ansible_default_ipv4["address"] }}:53"
+  local-address: "{{ ansible_default_ipv4['address'] }}:53"
