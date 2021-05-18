@@ -1,0 +1,11 @@
+---
+
+# ignoreip list should be space separated
+fail2ban_ignoreip:
+fail2ban_bantime: 600
+fail2ban_maxretry: 3
+fail2ban_destemail: root@localhost
+
+fail2ban_postfix_enabled: false
+fail2ban_nginx_http_auth_enabled: true
+fail2ban_nginx_botsearch_enabled: true

@@ -1,0 +1,26 @@
+# Customizations to the default fail2ban configuration.
+
+[DEFAULT]
+ignoreip  = 127.0.0.1/8 {{ fail2ban_ignoreip }}
+bantime   = {{ fail2ban_bantime }}
+maxretry  = {{ fail2ban_maxretry }}
+destemail = {{ fail2ban_destemail }}
+
+
+# Enable services
+# See /etc/fail2ban/jail.conf for more 'built-in' services
+
+[sshd]
+mode     = aggressive
+enabled  = true
+
+
+[postfix]
+enabled  = {{ fail2ban_postfix_enabled }}
+
+
+[nginx-http-auth]
+enabled  = {{ fail2ban_nginx_http_auth_enabled }}
+
+[nginx-botsearch]
+enabled  = {{ fail2ban_nginx_botsearch_enabled }}

@@ -47,3 +47,14 @@ firewall_allowed_tcp_ports:
 firewall_disable_firewalld: true
 firewall_disable_ufw: true
 ## End geerlingguy.firewall
+
+## Fail2ban
+# ignoreip list should be space separated
+#fail2ban_ignoreip:
+fail2ban_bantime: 1200
+#fail2ban_maxretry: 3
+#fail2ban_destemail: root@localhost
+
+#fail2ban_postfix_enabled: false
+#fail2ban_nginx_http_auth_enabled: true
+#fail2ban_nginx_botsearch_enabled: true

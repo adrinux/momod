@@ -11,6 +11,7 @@
     - nginx-config
     - geerlingguy.firewall
     - powerdns.pdns_recursor
+    - fail2ban
 
 - hosts: dev
   become: yes
