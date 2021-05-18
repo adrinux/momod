@@ -1,0 +1,30 @@
+---
+- name: restart postfix
+  ansible.builtin.service:
+    name: postfix
+    state: restarted
+  become: yes
+
+- name: reload postfix
+  ansible.builtin.service:
+    name: postfix
+    state: reloaded
+  become: yes
+
+- name: restart dovecot
+  ansible.builtin.service:
+    name: dovecot
+    state: restarted
+  become: yes
+
+- name: restart opendkim
+  ansible.builtin.service:
+    name: opendkim
+    state: restarted
+  become: yes
+
+- name: restart opendmarc
+  ansible.builtin.service:
+    name: opendmarc
+    state: restarted
+  become: yes

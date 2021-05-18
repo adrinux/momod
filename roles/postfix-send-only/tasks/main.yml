@@ -1,0 +1,106 @@
+---
+- name: Set /etc/mailname to fqdn
+  ansible.builtin.template:
+    src: "mailname.j2"
+    dest: /etc/mailname
+    owner: root
+    group: root
+    mode: 0644
+
+# These preseed values are for a null client install. Send only, no local delivery
+# See: http://www.postfix.org/STANDARD_CONFIGURATION_README.html#null_client
+# These stop dpkg throwing an error at ansible because of the ncurses UI
+# questions during postfix install
+- name: Set debconf values
+  ansible.builtin.debconf:
+    name: postfix
+    question: { { item.question } }
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items:
+    - {
+        question: "postfix/main_mailer_type",
+        value: "Internet Site",
+        vtype: "select",
+      }
+    - { question: "postfix/mailname", value: "{{ fqdn }}", vtype: "string" }
+    - { question: "postfix/relayhost", value: "$mydomain", vtype: "string" }
+    - { question: "postfix/destinations", value: "", vtype: "string" }
+
+- name: Install postfix
+  ansible.builtin.apt:
+    name: postfix
+    state: present
+
+- name: Install dovecot-core for SASL auth
+  ansible.builtin.apt:
+    name: dovecot-core
+    state: present
+
+- name: Enable postfix service
+  ansible.builtin.service:
+    name: postfix
+    state: started
+    enabled: true
+  become: yes
+
+- name: Enable dovecot service
+  ansible.builtin.service:
+    name: dovecot
+    state: started
+    enabled: true
+  become: yes
+
+# The settings in these config files always override debconf settings.
+- name: Copy main.cf
+  ansible.builtin.template:
+    src: "main.cf.j2"
+    dest: "/etc/postfix/main.cf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy master.cf
+  ansible.builtin.template:
+    src: "master.cf.j2"
+    dest: "/etc/postfix/master.cf"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart postfix
+
+- name: Copy virtual-regexp catch all
+  ansible.builtin.template:
+    src: "virtual-regexp-catchall.j2"
+    dest: "/etc/postfix/virtual-regexp"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload postfix
+  when: postfix_catch == 'all'
+
+- name: Copy virtual-regexp catch local
+  ansible.builtin.template:
+    src: "virtual-regexp.j2"
+    dest: "/etc/postfix/virtual-regexp"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload postfix
+  when: postfix_catch == 'local'
+
+- name: Copy dovecot master.conf
+  ansible.builtin.copy:
+    src: "10-master.conf"
+    dest: "/etc/dovecot/conf.d/10-master.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart dovecot
+
+- include: opendkim.yml
+- include: opendmarc.yml

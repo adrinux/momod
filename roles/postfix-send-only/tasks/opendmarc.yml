@@ -1,0 +1,31 @@
+---
+- name: Make sure OpenDMARC and dependencies are installed
+  ansible.builtin.apt:
+    pkg:
+      - opendmarc
+
+- name: Copy custom /etc/default/opendmarc
+  ansible.builtin.template:
+    src: etc-default-opendmarc.j2
+    dest: /etc/default/opendmarc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy custom /etc/opendmarc.conf
+  ansible.builtin.template:
+    src: opendmarc.conf.j2
+    dest: /etc/opendmarc.conf
+    owner: opendmarc
+    group: opendmarc
+    mode: 0640
+  notify:
+    - restart opendmarc
+    - restart postfix
+
+- name: Enable opendmarc service
+  ansible.builtin.service:
+    name: opendmarc
+    state: started
+    enabled: true
+  become: yes

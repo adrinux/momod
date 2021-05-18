@@ -1,0 +1,49 @@
+---
+- name: Make sure OpenDKIM and dependencies are installed
+  ansible.builtin.apt:
+    pkg:
+      - opendkim
+      - opendkim-tools
+
+- name: Make sure the OpenDKIM config directory is present
+  ansible.builtin.file:
+    state: directory
+    path: /etc/opendkim
+    group: opendkim
+    owner: opendkim
+    mode: 644
+
+- name: Make sure the OpenDKIM key directories are present
+  ansible.builtin.file:
+    state: directory
+    path: /etc/opendkim/keys
+    group: opendkim
+    owner: opendkim
+    mode: 700
+
+- name: Generate OpenDKIM keys
+  ansible.builtin.command: opendkim-genkey -r -d {{ fqdn }} -D /etc/opendkim/keys/ creates=/etc/opendkim/keys/default.private
+
+- name: Copy default opendkim config into place
+  ansible.builtin.copy:
+    src: default_opendkim.j2
+    dest: /etc/default/opendkim
+    owner: root
+    group: root
+    mode: 644
+
+- name: Copy opendkim.conf into place
+  ansible.builtin.template:
+    src: opendkim.conf.j2
+    dest: /etc/opendkim.conf
+    owner: opendkim
+    group: opendkim
+    mode: 644
+  notify:
+    - restart opendkim
+    - restart postfix
+
+- name: Download default.txt for DKIM DNS TXT records to 'fetched/'
+  ansible.builtin.fetch:
+    src: /etc/opendkim/keys/default.txt
+    dest: fetched
