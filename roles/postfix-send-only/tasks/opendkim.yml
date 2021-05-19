@@ -22,7 +22,9 @@
     mode: 700
 
 - name: Generate OpenDKIM keys
-  ansible.builtin.command: opendkim-genkey -r -d {{ fqdn }} -D /etc/opendkim/keys/ creates=/etc/opendkim/keys/default.private
+  ansible.builtin.command:
+    cmd: opendkim-genkey -r -d {{ fqdn }} -D /etc/opendkim/keys/
+    creates: /etc/opendkim/keys/default.private
 
 - name: Copy default opendkim config into place
   ansible.builtin.copy:
