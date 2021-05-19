@@ -1,13 +1,13 @@
 # Command-line options specified here will override the contents of
 # /etc/opendmarc.conf. See opendmarc(8) for a complete list of options.
 #DAEMON_OPTS=""
-# Change to /var/spool/postfix/var/run/opendmarc to use a Unix socket with
+# Change to /var/spool/postfix/run/opendmarc to use a Unix socket with
 # postfix in a chroot:
-#RUNDIR=/var/spool/postfix/var/run/opendmarc
-RUNDIR=/var/run/opendmarc
+#RUNDIR=/var/spool/postfix/run/opendmarc
+RUNDIR=/run/opendmarc
 #
 # Uncomment to specify an alternate socket
-# Note that setting this will override any Socket value in opendkim.conf
+# Note that setting this will override any Socket value in opendmarc.conf
 # default:
 #SOCKET=local:$RUNDIR/opendmarc.sock
 # listen on all interfaces on port 54321:

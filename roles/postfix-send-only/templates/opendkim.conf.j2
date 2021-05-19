@@ -28,14 +28,14 @@ KeyFile		/etc/dkimkeys/example.private
 # user (for example, Postfix). You may need to add user "postfix" to group
 # "opendkim" in that case.
 UserID			opendkim:opendkim
-UMask			007
+UMask			002
 
 # Socket for the MTA connection (required). If the MTA is inside a chroot jail,
 # it must be ensured that the socket is accessible. In Debian, Postfix runs in
 # a chroot in /var/spool/postfix, therefore a Unix socket would have to be
 # configured as shown on the last line below.
 #Socket			local:/run/opendkim/opendkim.sock
-Socket			inet:8891@localhost
+Socket			inet:8791@localhost
 #Socket			inet:8891
 #Socket			local:/var/spool/postfix/opendkim/opendkim.sock
 
