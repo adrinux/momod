@@ -45,7 +45,7 @@
     - restart opendkim
     - restart postfix
 
-- name: Download default.txt for DKIM DNS TXT records to 'fetched/'
+- name: Download default.txt for DKIM DNS TXT records to 'local/fetched/'
   ansible.builtin.fetch:
     src: /etc/opendkim/keys/default.txt
-    dest: fetched
+    dest: ../local/fetched
