@@ -14,7 +14,7 @@
 - name: Set debconf values
   ansible.builtin.debconf:
     name: postfix
-    question: { { item.question } }
+    question: "{{ item.question }}"
     value: "{{ item.value }}"
     vtype: "{{ item.vtype }}"
   with_items:
