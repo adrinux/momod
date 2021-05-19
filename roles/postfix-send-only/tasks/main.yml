@@ -1,7 +1,7 @@
 ---
 - name: Set /etc/mailname to fqdn
   ansible.builtin.template:
-    src: "mailname.j2"
+    src: "etc-mailname.j2"
     dest: /etc/mailname
     owner: root
     group: root
@@ -54,7 +54,7 @@
 # The settings in these config files always override debconf settings.
 - name: Copy main.cf
   ansible.builtin.template:
-    src: "main.cf.j2"
+    src: "etc-postfix-main.cf.j2"
     dest: "/etc/postfix/main.cf"
     owner: root
     group: root
@@ -62,7 +62,7 @@
 
 - name: Copy master.cf
   ansible.builtin.template:
-    src: "master.cf.j2"
+    src: "etc-postfix-master.cf.j2"
     dest: "/etc/postfix/master.cf"
     owner: root
     group: root
@@ -94,7 +94,7 @@
 
 - name: Copy dovecot master.conf
   ansible.builtin.copy:
-    src: "10-master.conf"
+    src: "dovecot-10-master.conf"
     dest: "/etc/dovecot/conf.d/10-master.conf"
     owner: root
     group: root
