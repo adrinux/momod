@@ -1,0 +1,70 @@
+---
+# Certbot installation
+- name: Install Certbot snap
+  community.general.snap:
+    name: certbot
+    state: present
+    classic: yes
+
+# Add Gandi DNS plugin
+# https://pypi.org/project/certbot-plugin-gandi/
+- name: Install Certbot-Plugin-Gandi
+  pip:
+    name: certbot-plugin-gandi
+
+- name: Copy gandi dns credentials
+  ansible.builtin.copy:
+    src: ../local/secrets/gandi.ini
+    dest: /etc/letsencrypt/gandi.ini
+    owner: root
+    group: root
+    mode: 0600
+
+# For Docker containers
+# - name: Ensure cert destination for traefik exists
+#   ansible.builtin.file:
+#     path: "{{ docker_data_dir }}/certbot"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0755
+
+# - name: Add post generation deploy script
+#   ansible.builtin.template:
+#     src: cert-deploy.sh
+#     dest: /usr/local/bin/cert-deploy.sh
+#     owner: root
+#     group: root
+#     mode: 0755
+
+# Cert generation
+- name: Generate certs
+  include_tasks: generate-cert.yml
+  with_items: "{{ cert_domains }}"
+
+- name: Generate Wilcard certs
+  include_tasks: generate-wildcard-cert.yml
+  with_items: "{{ wildcard_domains }}"
+# - name: Add service to auto renew certs
+#   ansible.builtin.copy:
+#     src: certbot-service.conf
+#     dest: /etc/systemd/system/certbot-renewal.service
+#     owner: root
+#     group: root
+#     mode: 0644
+
+# - name: Add timer to auto renew certs
+#   ansible.builtin.copy:
+#     src: certbot-timer.conf
+#     dest: /etc/systemd/system/certbot-renewal.timer
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify:
+#     - "Reload systemd"
+
+# - name: "Enable and start service certbot-renewal"
+#    ansible.builtin.service:
+#     name: certbot-renewal.timer
+#     state: started
+#     enabled: true

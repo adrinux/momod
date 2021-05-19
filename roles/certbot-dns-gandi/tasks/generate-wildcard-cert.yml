@@ -1,0 +1,30 @@
+---
+
+# Create a gandi.ini file with api key
+# https://github.com/obynio/certbot-plugin-gandi
+# (see github page for nodes on permissions etc)
+- name: Check if gandi.ini exists
+  stat:
+    path: /etc/letsencrypt/gandi.ini
+  register: gandi_ini
+
+# Need to check if gandi.ini exists on server and copy over if not
+
+- name: Check if cert exists
+  stat:
+    path: /etc/letsencrypt/live/{{ item }}/cert.pem
+  register: letsencrypt_cert
+
+# Certbot cli options
+# --keep         keeps an existing certificate
+# --quiet        only errors are output
+# --staple-ocsp  enables oscp in cert
+# --must-staple  addded to cert
+
+- name: Generate new wildcard certificates if they don't exist
+  command:
+    certbot certonly --noninteractive --agree-tos -a certbot-plugin-gandi:dns --certbot-plugin-gandi:dns-credentials /etc/letsencrypt/gandi.ini -d {{ item }} -d \*.{{ item }} --email admin@perlucida.co.uk
+  when: not letsencrypt_cert.stat.exists and gandi_ini.stat.exists
+
+    # previously used certbot options
+    # --keep --quiet --staple-ocsp --must-staple -d
