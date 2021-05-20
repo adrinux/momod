@@ -4,5 +4,5 @@
 - hosts: testing
   become: yes
   roles:
-    - fail2ban
-    #- certbot-dns
+    - certbot-dns-gandi
+    - postfix-send-only
