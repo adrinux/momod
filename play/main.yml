@@ -12,6 +12,8 @@
     - geerlingguy.firewall
     - powerdns.pdns_recursor
     - fail2ban
+    - certbot-dns-gandi
+    - postfix-send-only
 
 - hosts: dev
   become: yes
