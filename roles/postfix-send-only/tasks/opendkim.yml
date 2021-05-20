@@ -48,4 +48,4 @@
 - name: Download default.txt for DKIM DNS TXT records to 'local/fetched/'
   ansible.builtin.fetch:
     src: /etc/opendkim/keys/default.txt
-    dest: ../local/fetched
+    dest: ../../local/fetched
