@@ -4,5 +4,4 @@
 - hosts: testing
   become: yes
   roles:
-    - certbot-dns-gandi
-    - postfix-send-only
+    - podman

@@ -1,0 +1,18 @@
+---
+# Add Kubik Project Podman repo signing key
+- name: Add Kubik Project repo key for Podman
+  ansible.builtin.apt_key:
+    url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_21.04/Release.key
+    state: present
+
+# Add Kubik Project Podman repo and signing key
+- name: Add Kubik Project repo for Podman
+  ansible.builtin.apt_repository:
+    repo: deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_21.04/ /
+    state: present
+    update-cache: yes
+
+- name: Install Podman
+  ansible.builtin.apt:
+    name: podman
+    state: present
