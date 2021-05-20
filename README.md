@@ -1,21 +1,29 @@
 # MOMOD
 
 **This a WIP repo.**
-**Current Status**
-Can setup up user accounts, hostname, unattended upgrades and harden SSHD.
+**Currently Working**
+
+- Sets up user accounts (with a great zsh prompt).
+- Configures hostname, ntp, unattended upgrades.
+- Hardens ssh, adds a firewall installs fail2ban.
+- Installs a caching DNS nameserver
+- Installs nginx webserver
+- Installs and sets up a send-only configuration of postfix.
+- Can set up Letsencrypt certificates via Gandi DNS
 
 MOMOD = **M**aster **O**f **M**y **O**wn **D**ata
 
-Ansible based self-hosting of web sites and web apps with a focus on keeping things simple.
+Ansible based self-hosting of web sites and web apps with a focus on keeping things as simple as possible.
 
 Currently:
 
-- Only Ubuntu Server is supported.
-- Lets Encrypt wildcard DNS support but only via a Gandi.net registered Domain
+- Only Ubuntu Server is supported, currently Ubuntu 21.04 Hirsute Hippo but will stabilise on 22.04 LTS once it becomes available.
+- Lets Encrypt wildcard DNS support but only via a Gandi.net registered Domain.
 - Monolithic Ansible task files unless it really is useful to split tasks into sub-files.
 - Prefer tweaking rather than templating core system config files (so we don't overwrite upstream changes)
 
-Tested with Qemu. **(eventually)** Running on Linode VPS and Hetzner VPS.
+Currently testing with Qemu VM and a Vultr VPS. **(eventually)** Running on Linode VPS and Hetzner VPS.
+(Note: Vultr have Ubuntu 21.04 images available but don't automatically set up your ssh key in root's authorized_keys, you'll  need to password login and set that up manually before running Momod roles.)
 
 ## Getting Started
 
@@ -68,7 +76,7 @@ Copy the inventory file template (or create your own) to local:
 cp momod/templates/hosts.ini.template local/hosts.ini
 ```
 
-Edit hosts.ini and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to modify or remove those). Make sure your new hosts are part of the `[setup]` group as well as any other groups you'd like.
+Edit hosts.ini and add your hosts (there are two servers defined for VMs set up with [Sausiq](https://github.com/adrinux/sausiq), feel free to remove those, they're not really useful beyond basic setup). Make sure your new hosts are part of the `[setup]` group as well as any other groups you'd like.
 
 Copy the group_vars and host_vars templates to local:
 
@@ -165,7 +173,9 @@ This role adds several useful aliases, see `roles/momod-zsh-config/files/dot-zsh
 
 ## Development
 
-It's useful to use a local virtual machine for development (and for practice runs). Personally I use Qemu on my Linux desktop PC. For an easy way to get a Qemu VM of an Ubuntu Server cloud image up and runnig see my [Sausiq](https://github.com/adrinux/sausiq) project.
+Whilst initial development used Qemu VMs on my Linux desktop PC created with [Sausiq](https://github.com/adrinux/sausiq) this doesn't allow for proper testing of Letsencrypt, Wireguard and so on. So you'll need a VPS (or an actual server...) running Ubuntu 21.04.
+
+There is an Ansible playbook play/dev.yml for testing new roles.
 
 
 ## Sponsor / Donate
