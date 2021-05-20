@@ -22,7 +22,6 @@ keys:
 ntp_timezone: "Europe/London"
 ntp_enabled: true
 ntp_manage_config: true
-ntp_area: ".europe"
 
 # Use python3 on managed hosts
 ansible_python_interpreter: /usr/bin/python3
