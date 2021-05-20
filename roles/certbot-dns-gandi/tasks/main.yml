@@ -1,10 +1,15 @@
 ---
 # Certbot installation
-- name: Install Certbot snap
-  community.general.snap:
+- name: Install Certbot
+  ansible.builtin.apt:
     name: certbot
     state: present
-    classic: yes
+
+# Gandi DNS Certbot plugin is installed via pip
+- name: Install pip
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
 
 # Add Gandi DNS plugin
 # https://pypi.org/project/certbot-plugin-gandi/
@@ -12,9 +17,17 @@
   pip:
     name: certbot-plugin-gandi
 
+- name: Create /etc/letsencrypt for our credentials
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
 - name: Copy gandi dns credentials
   ansible.builtin.copy:
-    src: ../local/secrets/gandi.ini
+    src: ../../local/secrets/gandi.ini
     dest: /etc/letsencrypt/gandi.ini
     owner: root
     group: root
@@ -41,10 +54,13 @@
 - name: Generate certs
   include_tasks: generate-cert.yml
   with_items: "{{ cert_domains }}"
+  when: cert_domains is defined
 
 - name: Generate Wilcard certs
   include_tasks: generate-wildcard-cert.yml
   with_items: "{{ wildcard_domains }}"
+  when: wildcard_domains is defined
+#
 # - name: Add service to auto renew certs
 #   ansible.builtin.copy:
 #     src: certbot-service.conf
