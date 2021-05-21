@@ -28,6 +28,9 @@
       - zip
       - unzip
       - nginx-full
+      - mariadb-common
+      - mariadb-server
+      - mariadb-client
       - wireguard
     state: present
     update_cache: yes
