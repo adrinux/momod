@@ -28,5 +28,6 @@
       - zip
       - unzip
       - nginx-full
+      - wireguard
     state: present
     update_cache: yes
