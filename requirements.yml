@@ -1,5 +1,6 @@
 ---
 #collections:
+#  - name:
 #  - name: nginxinc.nginx_core
 
 # Roles from Ansible Galaxy
@@ -7,3 +8,4 @@ roles:
   - src: geerlingguy.ntp
   - src: geerlingguy.firewall
   - src: powerdns.pdns_recursor
+  - src: githubixx.ansible_role_wireguard
