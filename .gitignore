@@ -21,4 +21,4 @@ roles-galaxy/*/
 roles-github/*/
 
 # Ansible Collections
-collections/*/
+roles-collections/*/
