@@ -4,9 +4,6 @@
     pkg:
       - apache
       - puppet
-      - mysql-common
-      - mysql-server
-      - mysql-client
       - exim4
     state: absent
 
