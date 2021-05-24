@@ -16,3 +16,7 @@
   ansible.builtin.apt:
     name: podman
     state: present
+
+# Podman can search multiple container registries
+- name: Add container registries
+  
