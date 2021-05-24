@@ -10,6 +10,7 @@
     - common-packages
     - nginx-config
     - geerlingguy.firewall
+    - sysctl
     - powerdns.pdns_recursor
     - fail2ban
     - certbot-dns-gandi

@@ -13,3 +13,10 @@
 [setup]
 192.168.122.21
 192.168.122.22
+
+
+# You probably want all hosts in here
+# The Ansible control host will be part of this network too
+[momod-vpn]
+192.168.122.21
+192.168.122.22
