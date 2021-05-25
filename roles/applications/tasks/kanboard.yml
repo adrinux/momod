@@ -1,0 +1,24 @@
+---
+- name: "Create directory for kanboard container data"
+  file:
+    path: "/data/momod/kanboard/data"
+    state: "directory"
+
+- name: "Create directory for kanboard plugins"
+  file:
+    path: "/data/momod/kanboard/plugins"
+    state: "directory"
+
+- name: "Create directory for mariadb container data"
+  file:
+    path: "/data/momod/kanboard-mariadb"
+    state: "directory"
+
+- name: Add System user account for Kanboard email
+  user:
+    name: kanboard
+    uid: 601
+    password: "{{ kanboard_email_passwd_crypt }}"
+    shell: /usr/sbin/nologin
+    groups: mail
+    append: true

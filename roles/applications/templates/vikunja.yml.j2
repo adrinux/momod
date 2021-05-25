@@ -1,0 +1,94 @@
+
+  vikunja-backend:
+    container_name: 'vikunja-backend'
+    image: vikunja/api
+    environment:
+      VIKUNJA_DATABASE_HOST: 'vikunja-db'
+      VIKUNJA_DATABASE_PASSWORD: "{{ vikunja_db_password }}"
+      VIKUNJA_DATABASE_TYPE: 'mysql'
+      VIKUNJA_DATABASE_USER: 'vikunja'
+      VIKUNJA_DATABASE_DATABASE: 'vikunja'
+      VIKUNJA_REDIS_ENABLED: 1
+      VIKUNJA_REDIS_HOST: 'vikunja-redis:6379'
+      VIKUNJA_CACHE_ENABLED: 1
+      VIKUNJA_CACHE_TYPE: redis
+      VIKUNJA_SERVICE_FRONTENDURL: "https://vikunja.{{ traefik_domain }}"
+      VIKUNJA_SERVICE_ENABLEREGISTRATION: 0
+      VIKUNJA_MIGRATION_WUNDERLIST_ENABLE: 0
+      VIKUNJA_MIGRATION_TODOIST_ENABLE: 1
+      VIKUNJA_FILES_BASEPATH: "/app/vikunja/files"
+      VIKUNJA_MAILER_ENABLED: 1
+      VIKUNJA_MAILER_HOST: "{{ fqdn }}"
+      VIKUNJA_MAILER_PORT: 587
+      VIKUNJA_MAILER_USERNAME: 'vikunja'
+      VIKUNJA_MAILER_PASSWORD: "{{ vikunja_email_password }}"
+      VIKUNJA_MAILER_FROMEMAIL: "vikunja@{{ fqdn }}"
+      VIKUNJA_MAILER_SKIPTLSVERIFY: 'true'
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+    volumes:
+      - source: "/data/momod/vikunja-backend"
+        target: '/app/vikunja/files'
+        type: 'bind'
+    depends_on:
+      - vikunja-db
+      - vikunja-redis
+    restart: "{{ restart_policy }}"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.vikunja-backend.rule: "Host(`vikunja.{{ traefik_domain }}`) && PathPrefix(`/api/v1`, `/dav/`)"
+      traefik.http.routers.vikunja-backend.tls: 'true'
+      #traefik.http.routers.vikunja-backend.middlewares: 'access-whitelist@file'
+      com.centurylinklabs.watchtower.enable: 'true'
+    networks:
+      - 'default'
+      - 'frontend'
+
+  vikunja-frontend:
+    container_name: 'vikunja-frontend'
+    image: vikunja/frontend
+    environment:
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.vikunja-frontend.rule: "Host(`vikunja.{{ traefik_domain }}`) && PathPrefix(`/`)"
+      traefik.http.routers.vikunja-frontend.tls: 'true'
+      #traefik.http.routers.vikunja-frontend.middlewares: 'access-whitelist@file'
+      com.centurylinklabs.watchtower.enable: 'true'
+    depends_on:
+      - vikunja-backend
+    networks:
+      - 'default'
+      - 'frontend'
+    restart: "{{ restart_policy }}"
+
+  vikunja-db:
+    container_name: 'vikunja-db'
+    image: linuxserver/mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "{{ mariadb_root_password }}"
+      MYSQL_USER: 'vikunja'
+      MYSQL_PASSWORD: "{{ vikunja_db_password }}"
+      MYSQL_DATABASE: 'vikunja'
+      TZ: 'Europe/London'
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+    volumes:
+      - source: "/data/momod/vikunja-mariadb"
+        target: '/config'
+        type: 'bind'
+    restart: "{{ restart_policy }}"
+    networks:
+      - 'default'
+
+  vikunja-redis:
+    container_name: 'vikunja-redis'
+    image: redis
+    environment:
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+    networks:
+      - 'default'
+    restart: "{{ restart_policy }}"
+

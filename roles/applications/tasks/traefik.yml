@@ -1,0 +1,21 @@
+---
+- name: "Create directory for data"
+  file:
+    path: "/data/momod/{{ dir }}"
+    state: "directory"
+  loop:
+    - "traefik_data"
+  loop_control:
+    loop_var: "dir"
+
+- name: "Copy traefik config into place"
+  template:
+    src: "templates/traefik.toml.j2"
+    dest: "/data/momod/traefik_data/traefik.toml"
+    mode: "0644"
+
+- name: "Copy traefik dynamic configuration into place"
+  template:
+    src: "templates/traefik_dynamic_conf.toml.j2"
+    dest: "/data/momod/traefik_data/dynamic_conf.toml"
+    mode: "0644"

@@ -1,0 +1,19 @@
+---
+- name: "Create directory for Wallabag data"
+  file:
+    path: "/data/momod/wallabag/images"
+    state: "directory"
+
+- name: "Create directory for wallabag database"
+  file:
+    path: "/data/momod/wallabag-mariadb"
+    state: "directory"
+
+- name: Add System user account for Wallabag email
+  user:
+    name: wallabag
+    uid: 604
+    password: "{{ wallabag_email_passwd_crypt }}"
+    shell: /usr/sbin/nologin
+    groups: mail
+    append: true

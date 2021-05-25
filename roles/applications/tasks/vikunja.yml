@@ -1,0 +1,19 @@
+---
+- name: "Create directory for Vikunja backend data"
+  file:
+    path: "/data/momod/vikunja-backend"
+    state: "directory"
+
+- name: "Create directory for Vikunja database"
+  file:
+    path: "/data/momod/vikunja-mariadb"
+    state: "directory"
+
+- name: Add System user account for Vikunja email
+  user:
+    name: vikunja
+    uid: 602
+    password: "{{ vikunja_email_passwd_crypt }}"
+    shell: /usr/sbin/nologin
+    groups: mail
+    append: true

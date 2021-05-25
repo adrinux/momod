@@ -1,0 +1,34 @@
+
+  radicale:
+    image: tomsquest/docker-radicale
+    container_name: radicale
+    init: true
+    #read_only: true # 20200313 Bug in image, so disabled
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    restart: "{{ restart_policy }}"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.radicale.rule: "Host(`radicale.{{ traefik_domain }}`)"
+      traefik.http.routers.radicale.tls: 'true'
+    volumes:
+      - source: "/data/momod/radicale/data"
+        target: '/data'
+        type: 'bind'
+      - source: "/data/momod/radicale"
+        target: '/etc/radicale'
+        type: 'bind'
+        read_only: 'yes'
+    networks:
+      - 'default'
+      - 'frontend'
+    environment:
+      - PUID={{ docker_user_uid }}
+      - PGID={{ docker_user_gid }}

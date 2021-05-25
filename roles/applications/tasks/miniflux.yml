@@ -1,0 +1,5 @@
+---
+- name: "Create directory for Miniflux database"
+  file:
+    path: "/data/momod/miniflux-postgres"
+    state: "directory"

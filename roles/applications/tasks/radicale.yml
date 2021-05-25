@@ -1,0 +1,17 @@
+---
+- name: "Create directory for Radicale data"
+  file:
+    path: "/data/momod/radicale/data"
+    state: "directory"
+
+- name: "Copy Radicale config into place"
+  copy:
+    src: "files/radicale.conf"
+    dest: "/data/momod/radicale/config"
+    mode: "0644"
+
+- name: "Copy Radicale Authentication config into place"
+  template:
+    src: "templates/radicale.htpasswd.j2"
+    dest: "/data/momod/radicale/htpasswd"
+    mode: "0644"

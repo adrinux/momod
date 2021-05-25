@@ -1,0 +1,112 @@
+---
+# Where to store the bind mounted volumes on the docker hosts
+- name: Create application data directory
+  file:
+    path: /data/momod
+    state: directory
+    mode: 0755
+
+- name: Add per application infrastructure
+  include_tasks: ".yml"
+
+# Where we store the podman-compose files
+- name: Create podman compose directory in /opt
+  file:
+    path: "/opt/podman-compose"
+    state: directory
+    owner: "{{ app_services_user }}"
+    group: "{{ app_services_user }}"
+    mode: 0750
+# TODO
+# - name: Copy podman compose files into place
+#   template:
+#     src: templates/*-compose.yml.j2
+#     dest: /opt/podman-compose/*-compose.yml
+#     owner: "{{ app_services_user }}"
+#     group: "{{ app_services_user }}"
+#     mode: 0644
+# Add services to docker-compose.yml if enabled
+
+# - name: Check if kanboard is enabled
+#   set_fact:
+#     kanboard_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'kanboard' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/kanboard.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: kanboard"
+#   when: kanboard_enabled == true
+
+# - name: Check if vikunja is enabled
+#   set_fact:
+#     vikunja_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'vikunja' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/vikunja.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: vikunja"
+#   when: vikunja_enabled == true
+
+# - name: Check if radicale is enabled
+#   set_fact:
+#     radicale_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'radicale' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/radicale.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: radicale"
+#   when: radicale_enabled == true
+
+# - name: Check if heimdall is enabled
+#   set_fact:
+#     heimdall_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'heimdall' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/heimdall.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: heimdall"
+#   when: heimdall_enabled == true
+
+# - name: Check if Seafile is enabled
+#   set_fact:
+#     seafile_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'seafile' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/seafile.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: seafile"
+#   when: seafile_enabled == true
+
+# - name: Check if Wallabag is enabled
+#   set_fact:
+#     wallabag_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'wallabag' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/wallabag.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: wallabag"
+#   when: wallabag_enabled == true
+
+# - name: Check if Miniflux is enabled
+#   set_fact:
+#     miniflux_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'miniflux' in item"
+
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/miniflux.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: miniflux"
+#   when: miniflux_enabled == true

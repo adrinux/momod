@@ -1,0 +1,49 @@
+---
+# uid:gid to run containers as
+# usually yourself
+compose_user_uid: 2000
+compose_user_gid: 2000
+
+# Which user owns the podman compose file
+app_services_user: "root"
+
+###
+
+# Subdomain to put all services under
+traefik_domain: "trfk.example.com"
+
+# traefik dashboard user:pass
+# Generate an encrypted password with "htpasswd -nbB admin PASSWORD"
+traefik_auth_credentials:
+
+# Container restart policy
+restart_policy: "unless-stopped"
+
+# Database root password for all services
+mariadb_root_password:
+
+# Kanboard password
+kanboard_db_password:
+vikunja_db_password:
+
+# Encrypted user account passwords (for application email)
+# Advice on generating
+# https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module
+kanboard_email_passwd_crypt:
+vikunja_email_passwd_crypt:
+vikunja_email_password:
+
+radicale_users:
+
+# Wallabag
+wallabag_db_password:
+wallabag_mail_host:
+wallabag_mail_user:
+wallabag_email_passwd_crypt:
+wallabag_mail_from:
+wallabag_secret:
+
+# Miniflux
+miniflux_admin_user:
+miniflux_admin_password:
+miniflux_postgres_password:

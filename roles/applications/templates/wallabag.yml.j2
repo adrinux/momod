@@ -1,0 +1,73 @@
+
+# wallabag bookmark/archive
+  wallabag:
+    image: wallabag/wallabag
+    container_name: 'wallabag'
+    volumes:
+      - source: "/data/momod/wallabag/images"
+        target: '/var/www/wallabag/web/assets/images'
+        type: 'bind'
+    environment:
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+      MYSQL_ROOT_PASSWORD: "{{ mariadb_root_password }}"
+      SYMFONY__ENV__DATABASE_DRIVER: 'pdo_mysql'
+      SYMFONY__ENV__DATABASE_HOST: 'wallabag-mariadb'
+      SYMFONY__ENV__DATABASE_PORT: '3306'
+      SYMFONY__ENV__DATABASE_NAME: 'wallabag'
+      SYMFONY__ENV__DATABASE_USER: 'wallabag'
+      SYMFONY__ENV__DATABASE_PASSWORD: "{{ wallabag_db_password }}"
+      SYMFONY__ENV__DATABASE_CHARSET: 'utf8mb4'
+      SYMFONY__ENV__MAILER_PORT: '587'
+      SYMFONY__ENV__MAILER_HOST: "{{ wallabag_mail_host }}"
+      SYMFONY__ENV__MAILER_USER: "{{ wallabag_mail_user }}"
+      SYMFONY__ENV__MAILER_PASSWORD: "{{ wallabag_email_password }}"
+      SYMFONY__ENV__FROM_EMAIL: "{{ wallabag_mail_from }}"
+      SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.{{ traefik_domain }}"
+      SYMFONY__ENV__SECRET: "{{ wallabag_secret }}"
+      SYMFONY__ENV__FOSUSER_REGISTRATION: 'false'
+      SYMFONY__ENV__FOSUSER_CONFIRMATION: 'false'
+      SYMFONY__ENV__REDIS_HOST: 'wallabag-redis'
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.wallabag.entrypoints: 'http'
+      traefik.http.routers.wallabag.rule: "Host(`wallabag.{{ traefik_domain }}`)"
+      traefik.http.routers.wallabag.middlewares: 'redirect@file'
+      traefik.http.routers.wallabag-secure.entrypoints: 'https'
+      traefik.http.routers.wallabag-secure.rule: "Host(`wallabag.{{ traefik_domain }}`)"
+      traefik.http.routers.wallabag-secure.tls: 'true'
+      traefik.http.routers.wallabag-secure.middlewares: 'wallabagHeaders'
+      traefik.http.middlewares.wallabagHeaders.headers.sslProxyHeaders.X-Forwarded-Proto: 'https'
+    networks:
+      - 'default'
+      - 'frontend'
+    restart: "{{ restart_policy }}"
+    depends_on:
+      - wallabag-mariadb
+      - wallabag-redis
+
+# Redis for wallabag
+  wallabag-redis:
+    image: redis:alpine
+    container_name: 'wallabag-redis'
+    networks:
+      - 'default'
+    restart: "{{ restart_policy }}"
+
+# MariaDB database for wallabag
+  wallabag-mariadb:
+    container_name: "wallabag-mariadb"
+    image: mariadb:10.4
+    environment:
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+      MYSQL_ROOT_PASSWORD: "{{ mariadb_root_password }}"
+      TZ: 'Europe/London'
+      MYSQL_LOG_CONSOLE: 'true'
+    volumes:
+      - source: "/data/momod/wallabag-mariadb"
+        target: '/var/lib/mysql'
+        type: 'bind'
+    networks:
+      - 'default'
+    restart: "{{ restart_policy }}"

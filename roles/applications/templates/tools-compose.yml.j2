@@ -1,0 +1,25 @@
+---
+
+version: '3.6'
+
+networks:
+  web:
+    name: web
+    external: true
+
+services:
+
+# Adminer database gui
+  adminer:
+    image: adminer
+    container_name: "adminer"
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.backend=adminer
+      - traefik.frontend.rule=Host:adminer.hps.perlucida.uk
+      - traefik.docker.network=web
+      - traefik.port=8080
+    networks:
+      - web
+      - docker_services_default

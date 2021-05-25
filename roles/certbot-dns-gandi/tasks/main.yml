@@ -36,7 +36,7 @@
 # For Docker containers
 # - name: Ensure cert destination for traefik exists
 #   ansible.builtin.file:
-#     path: "{{ docker_data_dir }}/certbot"
+#     path: "/data/momod/certbot"
 #     state: directory
 #     owner: root
 #     group: root

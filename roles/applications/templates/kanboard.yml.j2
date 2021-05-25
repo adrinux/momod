@@ -1,0 +1,56 @@
+
+# MariaDB database for Kanboard
+  kanboard-mariadb:
+    container_name: "kanboard-mariadb"
+    image: mariadb:10.1
+    environment:
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+      MYSQL_ROOT_PASSWORD: "{{ mariadb_root_password }}"
+      TZ: 'Europe/London'
+      MYSQL_LOG_CONSOLE: 'true'
+      MYSQL_DATABASE: 'kanboard'
+      MYSQL_USER: 'kanboard'
+      MYSQL_PASSWORD: "{{ kanboard_db_password }}"
+    volumes:
+      - source: "/data/momod/kanboard-mariadb"
+        target: '/var/lib/mysql'
+        type: 'bind'
+    networks:
+      - 'default'
+    restart: "{{ restart_policy }}"
+
+
+# Kanboard task management
+  kanboard:
+    container_name: 'kanboard'
+    image: kanboard/kanboard:latest
+    environment:
+      PUID: "{{ docker_user_uid }}"
+      PGID: "{{ docker_user_gid }}"
+      DATABASE_URL: "mysql://kanboard:{{ kanboard_db_password }}@kanboard-mariadb/kanboard"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.kanboard.rule: "Host(`kanboard.{{ traefik_domain }}`)"
+      traefik.http.routers.kanboard.tls: 'true'
+    volumes:
+      - source: "/data/momod/kanboard/data"
+        target: '/var/www/app/data'
+        type: 'bind'
+      - source: "/data/momod/kanboard/plugins"
+        target: '/var/www/app/plugins'
+        type: 'bind'
+      - source: '/data/momod/certbot/cert.pem'
+        target: '/etc/nginx/ssl/kanboard.crt'
+        type: 'bind'
+        read_only: 'yes'
+      - source: '/data/momod/certbot/key.pem'
+        target: '/etc/nginx/ssl/kanboard.key'
+        type: 'bind'
+        read_only: 'yes'
+    depends_on:
+      - kanboard-mariadb
+    networks:
+      - 'default'
+      - 'frontend'
+    restart: "{{ restart_policy }}"
