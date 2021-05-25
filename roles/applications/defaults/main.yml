@@ -1,4 +1,13 @@
 ---
+enabled_services:
+  - traefik
+  #- portainer
+  #- kanboard
+  #- miniflux
+  #- wallabag
+  #- radicale
+  #- vikunja
+
 # uid:gid to run containers as
 # usually yourself
 compose_user_uid: 2000

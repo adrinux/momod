@@ -7,7 +7,10 @@
     mode: 0755
 
 - name: Add per application infrastructure
-  include_tasks: ".yml"
+  include_tasks: applications/{{ containers }}.yml
+  loop: "{{ enabled_services }}"
+  loop_control:
+    loop_var: "containers"
 
 # Where we store the podman-compose files
 - name: Create podman compose directory in /opt
