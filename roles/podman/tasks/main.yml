@@ -16,7 +16,7 @@
   ansible.builtin.apt:
     name: podman
     state: present
-
-# Podman can search multiple container registries
-- name: Add container registries
-  
+#
+# TODO
+# Run podman with socket available to traefik
+# Install podman-compose
