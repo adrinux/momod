@@ -17,6 +17,7 @@
     name: podman
     state: present
 #
-# TODO
+## TODO
 # Run podman with socket available to traefik
+# start/enable podman service?
 # Install podman-compose

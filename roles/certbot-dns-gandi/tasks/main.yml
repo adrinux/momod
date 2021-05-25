@@ -33,22 +33,22 @@
     group: root
     mode: 0600
 
-# For Docker containers
-# - name: Ensure cert destination for traefik exists
-#   ansible.builtin.file:
-#     path: "/data/momod/certbot"
-#     state: directory
-#     owner: root
-#     group: root
-#     mode: 0755
+# For Podman containers
+- name: Ensure cert destination for traefik exists
+  ansible.builtin.file:
+    path: "/data/momod/certbot"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
-# - name: Add post generation deploy script
-#   ansible.builtin.template:
-#     src: cert-deploy.sh
-#     dest: /usr/local/bin/cert-deploy.sh
-#     owner: root
-#     group: root
-#     mode: 0755
+- name: Add post generation deploy script
+  ansible.builtin.template:
+    src: cert-deploy.sh
+    dest: /usr/local/bin/cert-deploy.sh
+    owner: root
+    group: root
+    mode: 0755
 
 # Cert generation
 - name: Generate certs
@@ -60,27 +60,27 @@
   include_tasks: generate-wildcard-cert.yml
   with_items: "{{ wildcard_domains }}"
   when: wildcard_domains is defined
-#
-# - name: Add service to auto renew certs
-#   ansible.builtin.copy:
-#     src: certbot-service.conf
-#     dest: /etc/systemd/system/certbot-renewal.service
-#     owner: root
-#     group: root
-#     mode: 0644
 
-# - name: Add timer to auto renew certs
-#   ansible.builtin.copy:
-#     src: certbot-timer.conf
-#     dest: /etc/systemd/system/certbot-renewal.timer
-#     owner: root
-#     group: root
-#     mode: 0644
-#   notify:
-#     - "Reload systemd"
+- name: Add service to auto renew certs
+  ansible.builtin.copy:
+    src: certbot-service.conf
+    dest: /etc/systemd/system/certbot-renewal.service
+    owner: root
+    group: root
+    mode: 0644
 
-# - name: "Enable and start service certbot-renewal"
-#    ansible.builtin.service:
-#     name: certbot-renewal.timer
-#     state: started
-#     enabled: true
+- name: Add timer to auto renew certs
+  ansible.builtin.copy:
+    src: certbot-timer.conf
+    dest: /etc/systemd/system/certbot-renewal.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - "Reload systemd"
+
+- name: "Enable and start service certbot-renewal"
+  ansible.builtin.service:
+    name: certbot-renewal.timer
+    state: started
+    enabled: true
