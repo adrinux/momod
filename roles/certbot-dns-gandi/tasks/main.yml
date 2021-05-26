@@ -34,9 +34,9 @@
     mode: 0600
 
 # For Podman containers
-- name: Ensure cert destination for traefik exists
+- name: Ensure cert destination for containers exists
   ansible.builtin.file:
-    path: "/data/momod/certbot"
+    path: /data/momod/certbot
     state: directory
     owner: root
     group: root
@@ -84,3 +84,9 @@
     name: certbot-renewal.timer
     state: started
     enabled: true
+
+- name: Manually run post generation script
+  ansible.builtin.command:
+    cmd: /usr/local/bin/cert-deploy.sh
+    creates: "/data/momod/certbot/cert.pem"
+    become: yes
