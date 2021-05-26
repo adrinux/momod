@@ -16,8 +16,14 @@
   ansible.builtin.apt:
     name: podman
     state: present
-#
-## TODO
-# Run podman with socket available to traefik
-# start/enable podman service?
-# Install podman-compose
+
+- name: Enable and start the Podman service
+  ansible.builtin.service:
+    name: podman
+    enabled: yes
+    state: started
+
+- name: Install podman-compose via pip
+  ansible.builtin.pip:
+    name: podman-compose
+    state: present

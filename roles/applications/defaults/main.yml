@@ -1,12 +1,10 @@
 ---
 enabled_services:
-  - traefik
-  #- portainer
-  #- kanboard
-  #- miniflux
-  #- wallabag
-  #- radicale
-  #- vikunja
+#- miniflux
+#- kanboard
+#- wallabag
+#- radicale
+#- vikunja
 
 # uid:gid to run containers as
 # usually yourself
@@ -15,13 +13,6 @@ compose_user_gid: 2000
 
 # Which user owns the podman compose file
 app_services_user: "root"
-
-# Subdomain to put all applications under
-traefik_domain: "trfk.example.com"
-
-# traefik dashboard user:pass
-# Generate an encrypted password with "htpasswd -nbB admin PASSWORD"
-traefik_auth_credentials:
 
 ###
 

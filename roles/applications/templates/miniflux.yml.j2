@@ -6,8 +6,8 @@
     depends_on:
       - miniflux-postgres
     environment:
-      PUID: "{{ docker_user_uid }}"
-      PGID: "{{ docker_user_gid }}"
+      PUID: "{{ compose_user_uid}}"
+      PGID: "{{ compose_user_gid }}"
       BASE_URL: "https://miniflux.{{ traefik_domain }}/"
       DATABASE_URL: "postgres://miniflux:{{ miniflux_postgres_password }}@miniflux-postgres/miniflux?sslmode=disable"
       RUN_MIGRATIONS: 1
@@ -22,7 +22,6 @@
     expose:
       - 8080
     networks:
-      - 'default'
       - 'frontend'
     restart: "{{ restart_policy }}"
 
@@ -30,14 +29,12 @@
     image: postgres:12
     container_name: 'miniflux-postgres'
     environment:
-      PUID: "{{ docker_user_uid }}"
-      PGID: "{{ docker_user_gid }}"
+      PUID: "{{ compose_user_uid}}"
+      PGID: "{{ compose_user_gid }}"
       POSTGRES_USER: "miniflux"
       POSTGRES_PASSWORD: "{{ miniflux_postgres_password }}"
     volumes:
       - source: "/data/docker/miniflux-postgres/12"
         target: "/var/lib/postgresql/data"
         type: 'bind'
-    networks:
-      - 'default'
     restart: "{{ restart_policy }}"

@@ -20,16 +20,21 @@
     owner: "{{ app_services_user }}"
     group: "{{ app_services_user }}"
     mode: 0750
-# TODO
-# - name: Copy podman compose files into place
-#   template:
-#     src: templates/*-compose.yml.j2
-#     dest: /opt/podman-compose/*-compose.yml
-#     owner: "{{ app_services_user }}"
-#     group: "{{ app_services_user }}"
-#     mode: 0644
-# Add services to docker-compose.yml if enabled
+#
+# - name: Check if Miniflux is enabled
+#   set_fact:
+#     miniflux_enabled: true
+#   loop: "{{ lookup('list', enabled_services) }}"
+#   when: "'miniflux' in item"
 
+# - blockinfile:
+#     path: "/opt/docker_services/docker-compose.yml"
+#     block: "{{ lookup('template', 'templates/miniflux.yml.j2') }}"
+#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: miniflux"
+#   when: miniflux_enabled == true
+
+#
+#TODO
 # - name: Check if kanboard is enabled
 #   set_fact:
 #     kanboard_enabled: true
@@ -66,30 +71,6 @@
 #     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: radicale"
 #   when: radicale_enabled == true
 
-# - name: Check if heimdall is enabled
-#   set_fact:
-#     heimdall_enabled: true
-#   loop: "{{ lookup('list', enabled_services) }}"
-#   when: "'heimdall' in item"
-
-# - blockinfile:
-#     path: "/opt/docker_services/docker-compose.yml"
-#     block: "{{ lookup('template', 'templates/heimdall.yml.j2') }}"
-#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: heimdall"
-#   when: heimdall_enabled == true
-
-# - name: Check if Seafile is enabled
-#   set_fact:
-#     seafile_enabled: true
-#   loop: "{{ lookup('list', enabled_services) }}"
-#   when: "'seafile' in item"
-
-# - blockinfile:
-#     path: "/opt/docker_services/docker-compose.yml"
-#     block: "{{ lookup('template', 'templates/seafile.yml.j2') }}"
-#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: seafile"
-#   when: seafile_enabled == true
-
 # - name: Check if Wallabag is enabled
 #   set_fact:
 #     wallabag_enabled: true
@@ -102,14 +83,3 @@
 #     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: wallabag"
 #   when: wallabag_enabled == true
 
-# - name: Check if Miniflux is enabled
-#   set_fact:
-#     miniflux_enabled: true
-#   loop: "{{ lookup('list', enabled_services) }}"
-#   when: "'miniflux' in item"
-
-# - blockinfile:
-#     path: "/opt/docker_services/docker-compose.yml"
-#     block: "{{ lookup('template', 'templates/miniflux.yml.j2') }}"
-#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: miniflux"
-#   when: miniflux_enabled == true
