@@ -89,4 +89,3 @@
   ansible.builtin.command:
     cmd: /usr/local/bin/cert-deploy.sh
     creates: "/data/momod/certbot/cert.pem"
-    become: yes
