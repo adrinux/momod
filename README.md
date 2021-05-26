@@ -32,6 +32,7 @@ Currently testing with Qemu VM and a Vultr VPS. **(eventually)** Running on Lino
 There are couple of dependencies
 
 - [Ansible](https://github.com/ansible/ansible) obviously.
+- Wireguard
 - Optionally the [Meslo Nerd Font](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k) if you use Zsh. For more information on the Zsh configuration see "Momod Shell Configuration" below.
 
 
