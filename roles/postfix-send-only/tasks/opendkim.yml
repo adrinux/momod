@@ -16,15 +16,15 @@
 - name: Make sure the OpenDKIM key directories are present
   ansible.builtin.file:
     state: directory
-    path: /etc/opendkim/keys
+    path: /etc/dkimkeys
     group: opendkim
     owner: opendkim
     mode: 700
 
 - name: Generate OpenDKIM keys
   ansible.builtin.command:
-    cmd: opendkim-genkey -r -d {{ fqdn }} -D /etc/opendkim/keys/
-    creates: /etc/opendkim/keys/default.private
+    cmd: opendkim-genkey -r -d {{ fqdn }} -D /etc/dkimkeys/
+    creates: /etc/dkimkeys/default.private
 
 - name: Copy default opendkim config into place
   ansible.builtin.copy:
@@ -47,5 +47,5 @@
 
 - name: Download default.txt for DKIM DNS TXT records to 'local/fetched/'
   ansible.builtin.fetch:
-    src: /etc/opendkim/keys/default.txt
+    src: /etc/dkimkeys/default.txt
     dest: ../../local/fetched
