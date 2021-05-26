@@ -18,10 +18,8 @@ keys:
   - user: alice
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-# geerlingguy.ntp config
-ntp_timezone: "Europe/London"
-ntp_enabled: true
-ntp_manage_config: true
+# systemd-timesyncd config
+timezone: "Europe/London"
 
 # Use python3 on managed hosts
 ansible_python_interpreter: /usr/bin/python3

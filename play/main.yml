@@ -5,7 +5,6 @@
     - hostname
     - apt
     - unattended-upgrades
-    - geerlingguy.ntp
     - sshd
     - common-packages
     - nginx-config

@@ -7,6 +7,9 @@
     - ansible_ssh_user: "{{ setup_ansible_user }}"
   become: yes
   pre_tasks:
+    - name: Set Timezone
+      community.general.timezone:
+        name: "{{ timezone }}"
     - name: Install Required packages
       ansible.builtin.apt:
         name: ["git", "zsh"]

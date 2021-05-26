@@ -5,6 +5,5 @@ collections:
 
 # Roles from Ansible Galaxy
 roles:
-  - src: geerlingguy.ntp
   - src: geerlingguy.firewall
   - src: powerdns.pdns_recursor
