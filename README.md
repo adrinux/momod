@@ -4,7 +4,7 @@
 **Currently Working**
 
 - Sets up user accounts (with a great zsh prompt).
-- Configures hostname, ntp, unattended upgrades.
+- Configures hostname, timezone, unattended upgrades.
 - Hardens ssh, adds a firewall installs fail2ban.
 - Installs a caching DNS nameserver
 - Installs nginx webserver
