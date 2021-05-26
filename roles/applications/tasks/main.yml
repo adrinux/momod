@@ -11,15 +11,16 @@
   loop: "{{ enabled_services }}"
   loop_control:
     loop_var: "containers"
-
+#
+# TODO IF NEEDED
 # Where we store the podman-compose files
-- name: Create podman compose directory in /opt
-  file:
-    path: "/opt/podman-compose"
-    state: directory
-    owner: "{{ app_services_user }}"
-    group: "{{ app_services_user }}"
-    mode: 0750
+# - name: Create podman compose directory in /opt
+#   file:
+#     path: "/opt/podman-compose"
+#     state: directory
+#     owner: "{{ app_services_user }}"
+#     group: "{{ app_services_user }}"
+#     mode: 0750
 #
 # - name: Check if Miniflux is enabled
 #   set_fact:

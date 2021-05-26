@@ -16,14 +16,15 @@
   ansible.builtin.apt:
     name: podman
     state: present
-
+#
+# TODO IF NEEDED
 # - name: Enable and start the Podman service
 #   ansible.builtin.service:
 #     name: podman
 #     enabled: yes
 #     state: started
 
-- name: Install podman-compose via pip
-  ansible.builtin.pip:
-    name: podman-compose
-    state: present
+# - name: Install podman-compose via pip
+#   ansible.builtin.pip:
+#     name: podman-compose
+#     state: present
