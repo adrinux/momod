@@ -1,5 +1,0 @@
----
-- name: "Create directory for container data"
-  file:
-    path: "/data/momod/portainer_data"
-    state: "directory"

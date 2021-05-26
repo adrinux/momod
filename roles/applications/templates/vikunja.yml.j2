@@ -12,7 +12,7 @@
       VIKUNJA_REDIS_HOST: 'vikunja-redis:6379'
       VIKUNJA_CACHE_ENABLED: 1
       VIKUNJA_CACHE_TYPE: redis
-      VIKUNJA_SERVICE_FRONTENDURL: "https://vikunja.{{ traefik_domain }}"
+      VIKUNJA_SERVICE_FRONTENDURL: "https://vikunja.{{ apps_domain }}"
       VIKUNJA_SERVICE_ENABLEREGISTRATION: 0
       VIKUNJA_MIGRATION_WUNDERLIST_ENABLE: 0
       VIKUNJA_MIGRATION_TODOIST_ENABLE: 1
@@ -36,7 +36,7 @@
     restart: "{{ restart_policy }}"
     labels:
       traefik.enable: 'true'
-      traefik.http.routers.vikunja-backend.rule: "Host(`vikunja.{{ traefik_domain }}`) && PathPrefix(`/api/v1`, `/dav/`)"
+      traefik.http.routers.vikunja-backend.rule: "Host(`vikunja.{{ apps_domain }}`) && PathPrefix(`/api/v1`, `/dav/`)"
       traefik.http.routers.vikunja-backend.tls: 'true'
       #traefik.http.routers.vikunja-backend.middlewares: 'access-whitelist@file'
       com.centurylinklabs.watchtower.enable: 'true'
@@ -52,7 +52,7 @@
       PGID: "{{ docker_user_gid }}"
     labels:
       traefik.enable: 'true'
-      traefik.http.routers.vikunja-frontend.rule: "Host(`vikunja.{{ traefik_domain }}`) && PathPrefix(`/`)"
+      traefik.http.routers.vikunja-frontend.rule: "Host(`vikunja.{{ apps_domain }}`) && PathPrefix(`/`)"
       traefik.http.routers.vikunja-frontend.tls: 'true'
       #traefik.http.routers.vikunja-frontend.middlewares: 'access-whitelist@file'
       com.centurylinklabs.watchtower.enable: 'true'

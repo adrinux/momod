@@ -31,7 +31,7 @@
       DATABASE_URL: "mysql://kanboard:{{ kanboard_db_password }}@kanboard-mariadb/kanboard"
     labels:
       traefik.enable: 'true'
-      traefik.http.routers.kanboard.rule: "Host(`kanboard.{{ traefik_domain }}`)"
+      traefik.http.routers.kanboard.rule: "Host(`kanboard.{{ apps_domain }}`)"
       traefik.http.routers.kanboard.tls: 'true'
     volumes:
       - source: "/data/momod/kanboard/data"

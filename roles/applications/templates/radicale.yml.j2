@@ -16,7 +16,7 @@
     restart: "{{ restart_policy }}"
     labels:
       traefik.enable: 'true'
-      traefik.http.routers.radicale.rule: "Host(`radicale.{{ traefik_domain }}`)"
+      traefik.http.routers.radicale.rule: "Host(`radicale.{{ apps_domain }}`)"
       traefik.http.routers.radicale.tls: 'true'
     volumes:
       - source: "/data/momod/radicale/data"

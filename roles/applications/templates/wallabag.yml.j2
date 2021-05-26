@@ -23,7 +23,7 @@
       SYMFONY__ENV__MAILER_USER: "{{ wallabag_mail_user }}"
       SYMFONY__ENV__MAILER_PASSWORD: "{{ wallabag_email_password }}"
       SYMFONY__ENV__FROM_EMAIL: "{{ wallabag_mail_from }}"
-      SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.{{ traefik_domain }}"
+      SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.{{ apps_domain }}"
       SYMFONY__ENV__SECRET: "{{ wallabag_secret }}"
       SYMFONY__ENV__FOSUSER_REGISTRATION: 'false'
       SYMFONY__ENV__FOSUSER_CONFIRMATION: 'false'
@@ -31,10 +31,10 @@
     labels:
       traefik.enable: 'true'
       traefik.http.routers.wallabag.entrypoints: 'http'
-      traefik.http.routers.wallabag.rule: "Host(`wallabag.{{ traefik_domain }}`)"
+      traefik.http.routers.wallabag.rule: "Host(`wallabag.{{ apps_domain }}`)"
       traefik.http.routers.wallabag.middlewares: 'redirect@file'
       traefik.http.routers.wallabag-secure.entrypoints: 'https'
-      traefik.http.routers.wallabag-secure.rule: "Host(`wallabag.{{ traefik_domain }}`)"
+      traefik.http.routers.wallabag-secure.rule: "Host(`wallabag.{{ apps_domain }}`)"
       traefik.http.routers.wallabag-secure.tls: 'true'
       traefik.http.routers.wallabag-secure.middlewares: 'wallabagHeaders'
       traefik.http.middlewares.wallabagHeaders.headers.sslProxyHeaders.X-Forwarded-Proto: 'https'
