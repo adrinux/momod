@@ -23,8 +23,3 @@
 #     name: podman
 #     enabled: yes
 #     state: started
-
-# - name: Install podman-compose via pip
-#   ansible.builtin.pip:
-#     name: podman-compose
-#     state: present
