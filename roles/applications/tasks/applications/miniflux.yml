@@ -13,6 +13,8 @@
     state: started
     ports:
       - 8080:8080
+  become: yes
+  become_user: "{{ app_services_user }}"
 
 # Add containers to pod
 - name: Add miniflux-postgres container
@@ -27,6 +29,8 @@
       POSTGRES_PASSWORD: "{{ miniflux_postgres_password }}"
     volume: /data/momod/miniflux-postgres/12:/var/lib/postgresql/data
     pod: miniflux
+  become: yes
+  become_user: "{{ app_services_user }}"
 
 - name: Add miniflux container
   containers.podman.podman_container:
@@ -45,5 +49,7 @@
     expose:
       - 8080
     pod: miniflux
+  become: yes
+  become_user: "{{ app_services_user }}"
 #
 # Add systemd service?
