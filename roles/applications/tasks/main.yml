@@ -1,41 +1,28 @@
 ---
 # Where to store the bind mounted volumes on the docker hosts
 - name: Create application data directory
-  file:
+  ansible.builtin.file:
     path: /data/momod
     state: directory
     mode: 0755
 
-- name: Add per application infrastructure
-  include_tasks: applications/{{ containers }}.yml
-  loop: "{{ enabled_services }}"
-  loop_control:
-    loop_var: "containers"
+# Include tasks for enabled applications
 #
-# TODO IF NEEDED
-# Where we store the podman-compose files
-# - name: Create podman compose directory in /opt
-#   file:
-#     path: "/opt/podman-compose"
-#     state: directory
-#     owner: "{{ app_services_user }}"
-#     group: "{{ app_services_user }}"
-#     mode: 0750
-#
-# - name: Check if Miniflux is enabled
-#   set_fact:
-#     miniflux_enabled: true
-#   loop: "{{ lookup('list', enabled_services) }}"
-#   when: "'miniflux' in item"
+- name: Check if Miniflux is enabled
+  set_fact:
+    miniflux_enabled: true
+  loop: "{{ lookup('list', enabled_services) }}"
+  when: "'miniflux' in item"
 
-# - blockinfile:
-#     path: "/opt/docker_services/docker-compose.yml"
-#     block: "{{ lookup('template', 'templates/miniflux.yml.j2') }}"
-#     marker: "#{mark} ANSIBLE MANAGED BLOCK FOR: miniflux"
-#   when: miniflux_enabled == true
-
+- name: Add Miniflux feed reader pod
+  include_tasks: applications/miniflux.yml
+  when: miniflux_enabled == true
 #
-#TODO
+#
+#
+#
+#
+# TODO migrate to ansible podman
 # - name: Check if kanboard is enabled
 #   set_fact:
 #     kanboard_enabled: true

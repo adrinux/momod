@@ -4,7 +4,7 @@
 - hosts: testing
   become: yes
   roles:
-    - geerlingguy.firewall
-    - certbot-dns-gandi
-    - podman
+    #- geerlingguy.firewall
+    #- certbot-dns-gandi
+    #- podman
     - applications

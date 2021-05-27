@@ -6,12 +6,7 @@ enabled_services:
 #- radicale
 #- vikunja
 
-# uid:gid to run containers as
-# usually yourself
-compose_user_uid: 2000
-compose_user_gid: 2000
-
-# Which user owns the podman compose file
+# Which user owns the container data in bind mounts
 app_services_user: "root"
 
 ###
