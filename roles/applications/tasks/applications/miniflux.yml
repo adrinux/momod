@@ -21,7 +21,7 @@
   containers.podman.podman_container:
     name: miniflux-postgres
     image: docker.io/library/postgres:12
-    state: present
+    state: started
     recreate: yes
     restart_policy: on-failure:5
     env:
@@ -36,7 +36,7 @@
   containers.podman.podman_container:
     name: miniflux-app
     image: docker.io/miniflux/miniflux:latest
-    state: present
+    state: started
     recreate: yes
     restart_policy: on-failure:5
     env:
@@ -52,4 +52,4 @@
   become: yes
   become_user: "{{ app_services_user }}"
 #
-# Add systemd service?
+# Add systemd service
