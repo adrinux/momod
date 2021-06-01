@@ -39,3 +39,11 @@ wallabag_secret:
 miniflux_admin_user:
 miniflux_admin_password:
 miniflux_postgres_password:
+
+# Should not need to be changed, kept hear to avoid collisions
+# when creating new services
+miniflux_user_uid: 6001
+radicale_user_uid: 6002
+kanboard_user_uid: 6003
+vikunja_user_uid: 6004
+wallabag_user_uid: 6005
