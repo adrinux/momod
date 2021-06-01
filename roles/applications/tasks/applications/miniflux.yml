@@ -1,55 +1,42 @@
 ---
+- name: Add System user to run Miniflux with
+  ansible.builtin.user:
+    name: miniflux
+    uid: "{{ miniflux_user_uid }}"
+    password: "*"
+    state: present
+    system: yes
+
+- name: Check linger is enabled for miniflux user
+  ansible.builtin.stat:
+    path: "/var/lib/systemd/linger/miniflux"
+  register: miniflux_linger
+
+- name: Enable-linger for miniflux
+  ansible.builtin.command: "loginctl enable-linger miniflux"
+  when: not miniflux_linger.stat.exists
+
+# ensure XDG_RUNTIME_DIR is set for miniflux user?
+# Can specify as environment
+# export XDG_RUNTIME_DIR=/run/user/"{{ miniflux_user_uid }}"
+
+# Use podman secret to store db user/password?
+
 - name: Create directory for Miniflux database
   ansible.builtin.file:
     path: /data/momod/miniflux-postgres/12
     state: directory
-    owner: "{{ app_services_user }}"
-    group: "{{ app_services_user }}"
+    owner: miniflux
+    group: miniflux
     mode: 0755
-
-- name: Add a pod for miniflux
-  containers.podman.podman_pod:
-    name: miniflux
-    state: started
-    ports:
-      - 8080:8080
-  become: yes
-  become_user: "{{ app_services_user }}"
-
-# Add containers to pod
-- name: Add miniflux-postgres container
-  containers.podman.podman_container:
-    name: miniflux-postgres
-    image: docker.io/library/postgres:12
-    state: started
-    recreate: yes
-    restart_policy: on-failure:5
-    env:
-      POSTGRES_USER: "miniflux"
-      POSTGRES_PASSWORD: "{{ miniflux_postgres_password }}"
-    volume: /data/momod/miniflux-postgres/12:/var/lib/postgresql/data
-    pod: miniflux
-  become: yes
-  become_user: "{{ app_services_user }}"
-
-- name: Add miniflux container
-  containers.podman.podman_container:
-    name: miniflux-app
-    image: docker.io/miniflux/miniflux:latest
-    state: started
-    recreate: yes
-    restart_policy: on-failure:5
-    env:
-      BASE_URL: "https://{{ apps_domain }}/"
-      DATABASE_URL: "postgres://miniflux:{{ miniflux_postgres_password }}@miniflux-postgres/miniflux?sslmode=disable"
-      RUN_MIGRATIONS: 1
-      CREATE_ADMIN: 1
-      ADMIN_USERNAME: "{{ miniflux_admin_user }}"
-      ADMIN_PASSWORD: "{{ miniflux_admin_password }}"
-    expose:
-      - 8080
-    pod: miniflux
-  become: yes
-  become_user: "{{ app_services_user }}"
 #
-# Add systemd service
+#
+# Add systemd files.
+
+# Enable service
+# become: true
+#  become_user: miniflux
+#  environment:
+#    XDG_RUNTIME_DIR: /run/user/"{{ miniflux_user_uid }}"
+# Start service
+
