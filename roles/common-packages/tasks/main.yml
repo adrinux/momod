@@ -10,6 +10,7 @@
 - name: Installing common packages...be patient!
   ansible.builtin.apt:
     pkg:
+      - acl
       - apticron
       - bzip2
       - curl
