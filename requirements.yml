@@ -1,7 +1,6 @@
 ---
 collections:
   - name: ansible.posix
-  - name: containers.podman
   #- name: nginxinc.nginx_core
 
 # Roles from Ansible Galaxy
