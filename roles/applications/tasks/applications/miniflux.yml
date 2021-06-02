@@ -38,7 +38,7 @@
 
 - name: Create directory for Miniflux database
   ansible.builtin.file:
-    path: /data/momod/miniflux-postgres/12
+    path: /data/momod/miniflux-postgres/13
     state: directory
     owner: miniflux
     group: miniflux
