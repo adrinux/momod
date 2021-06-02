@@ -4,8 +4,22 @@
     name: miniflux
     uid: "{{ miniflux_user_uid }}"
     password: "*"
+    shell: /usr/bin/bash
     state: present
     system: yes
+
+# Use command for this until the Ansible user module
+# supports subuid and subgid see github issue:
+# https://github.com/ansible/ansible/issues/68199
+- name: Check for pre-existing subuid definition for miniflux
+  ansible.builtin.shell: "cat /etc/subuid"
+  become: yes
+  register: subuid_contents
+
+- name: Assign subuid range to miniflux user
+  ansible.builtin.command: "usermod -v {{ miniflux_subuid_base }}-{{ miniflux_subuid_base + 65536 }} -w {{ miniflux_subuid_base }}-{{ miniflux_subuid_base + 65536 }} miniflux"
+  become: yes
+  when: '"miniflux" in subuid_contents.stdout'
 
 - name: Check linger is enabled for miniflux user
   ansible.builtin.stat:
@@ -17,7 +31,7 @@
   when: not miniflux_linger.stat.exists
 
 # ensure XDG_RUNTIME_DIR is set for miniflux user?
-# Can specify as environment
+# Can specify as environment var
 # export XDG_RUNTIME_DIR=/run/user/"{{ miniflux_user_uid }}"
 
 # Use podman secret to store db user/password?
@@ -29,14 +43,72 @@
     owner: miniflux
     group: miniflux
     mode: 0755
-#
-#
-# Add systemd files.
 
-# Enable service
-# become: true
-#  become_user: miniflux
-#  environment:
-#    XDG_RUNTIME_DIR: /run/user/"{{ miniflux_user_uid }}"
-# Start service
+- name: Create miniflux user systemd directory
+  ansible.builtin.file:
+    path: /home/miniflux/.config/systemd/user/
+    state: directory
+    owner: miniflux
+    group: miniflux
+    mode: 0755
 
+- name: Copy pod-miniflux systemd unit file into place
+  ansible.builtin.copy:
+    src: files/pod-miniflux.service
+    dest: /home/miniflux/.config/systemd/user/pod-miniflux.service
+    owner: miniflux
+    group: miniflux
+    mode: 0644
+
+- name: Copy miniflux-postgres systemd unit file into place
+  ansible.builtin.template:
+    src: templates/container-miniflux-postgres.service.j2
+    dest: /home/miniflux/.config/systemd/user/container-miniflux-postgres.service
+    owner: miniflux
+    group: miniflux
+    mode: 0644
+
+- name: Copy miniflux-app systemd unit file into place
+  ansible.builtin.template:
+    src: templates/container-miniflux-app.service.j2
+    dest: /home/miniflux/.config/systemd/user/container-miniflux-app.service
+    owner: miniflux
+    group: miniflux
+    mode: 0644
+
+# - name: Reread systemd configs
+#   ansible.builtin.systemd:
+#     daemon_reload: yes
+
+- name: Enable & start miniflux pod container
+  ansible.builtin.systemd:
+    name: pod-miniflux
+    state: stopped
+    enabled: yes
+    scope: user
+  become: true
+  become_user: miniflux
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+
+- name: Enable & start miniflux postgres db container
+  ansible.builtin.systemd:
+    name: container-miniflux-postgres
+    state: stopped
+    enabled: yes
+    scope: user
+  become: true
+  become_user: miniflux
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+
+- name: Enable & start miniflux app container
+  ansible.builtin.systemd:
+    name: container-miniflux-app
+    state: stopped
+    enabled: yes
+    scope: user
+  become: true
+  become_user: miniflux
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
