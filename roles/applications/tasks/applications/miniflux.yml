@@ -8,6 +8,13 @@
     state: present
     system: yes
 
+- name: Set XDG_RUNTIME_DIR for miniflux user
+  ansible.builtin.lineinfile:
+    line: "export XDG_RUNTIME_DIR=/run/user/{{ miniflux_subuid_base }}"
+    path: /home/miniflux/.bashrc
+    insertafter: EOF
+    state: present
+
 # Use command for this until the Ansible user module
 # supports subuid and subgid see github issue:
 # https://github.com/ansible/ansible/issues/68199
@@ -92,7 +99,7 @@
 - name: Enable & start miniflux pod container
   ansible.builtin.systemd:
     name: pod-miniflux
-    state: stopped
+    state: started
     enabled: yes
     scope: user
   become: true
@@ -103,7 +110,7 @@
 - name: Enable & start miniflux postgres db container
   ansible.builtin.systemd:
     name: container-miniflux-postgres
-    state: stopped
+    state: started
     enabled: yes
     scope: user
   become: true
@@ -114,7 +121,7 @@
 - name: Enable & start miniflux app container
   ansible.builtin.systemd:
     name: container-miniflux-app
-    state: stopped
+    state: started
     enabled: yes
     scope: user
   become: true
