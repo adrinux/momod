@@ -7,4 +7,5 @@
     #- geerlingguy.firewall
     #- certbot-dns-gandi
     #- podman
-    - applications
+    - haproxy
+    #- applications
