@@ -46,10 +46,6 @@
   ansible.builtin.command: "loginctl enable-linger miniflux"
   when: not miniflux_linger.stat.exists
 
-# ensure XDG_RUNTIME_DIR is set for miniflux user?
-# Can specify as environment var
-# export XDG_RUNTIME_DIR=/run/user/"{{ miniflux_user_uid }}"
-
 # Use podman secret to store db user/password?
 
 - name: Create directory for Miniflux database
