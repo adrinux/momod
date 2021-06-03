@@ -19,7 +19,16 @@
 - name: Assign subuid range to miniflux user
   ansible.builtin.command: "usermod -v {{ miniflux_subuid_base }}-{{ miniflux_subuid_base + 65536 }} -w {{ miniflux_subuid_base }}-{{ miniflux_subuid_base + 65536 }} miniflux"
   become: yes
-  when: '"miniflux" in subuid_contents.stdout'
+  when: '"miniflux" not in subuid_contents.stdout'
+
+# These subuid/subguid changes aren't picked up by podman without reboot
+# Running 'podman system migrate' seems to help
+# See https://github.com/containers/podman/issues/3421#issuecomment-544455837
+- name: Nudge Podman into seeing subuid/gid changes
+  ansible.builtin.command: podman system migrate
+  become: yes
+  become_user: miniflux
+  when: '"miniflux" not in subuid_contents.stdout'
 
 - name: Check linger is enabled for miniflux user
   ansible.builtin.stat:
