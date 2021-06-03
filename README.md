@@ -9,7 +9,17 @@
 - Installs a caching DNS nameserver
 - Installs nginx webserver
 - Installs and sets up a send-only configuration of postfix.
-- Can set up Letsencrypt certificates via Gandi DNS
+- Can set up Letsencrypt wildcard certificates via Gandi DNS
+- Installs Podman
+- Can launch a Miniflux feed reader podman pod
+
+**Next**
+- Set up up a reverse proxy for https for all services and easy to remember URLs eg miniflux.momod.com
+- Set up wireguard
+- Set up a vpn connection between host and server
+- Host containers inside a private network only accessible via vpn
+
+---------------------
 
 MOMOD = **M**aster **O**f **M**y **O**wn **D**ata
 
@@ -29,7 +39,7 @@ Currently testing with Qemu VM and a Vultr VPS. **(eventually)** Running on Lino
 
 ### Dependencies
 
-There are couple of dependencies
+There are some dependencies required for the Ansible control host you install Momod on:
 
 - [Ansible](https://github.com/ansible/ansible) obviously.
 - Wireguard
@@ -163,7 +173,26 @@ ssh 192.168.122.22
 The main playbook is intended to do further setup. Update software, automatic software updates, security hardening (sshd, firewall, fail2ban), useful tools etc.
 
 
-- TODO Run service roles
+## Enabling and Running applications
+
+### Enabling an application service
+
+- Uncomment a service in the enabled_services list of your host_vars/servername.yml
+- Run the applications role
+
+Currently running this role is easiest done by uncommenting the podman and applications roles in play/dev.yml and running that play.
+TODO Add an applications play for enabling and disabling services
+
+### Stopping and starting application services
+
+Must be carried out as the user running the service. Each service has it's own user. e.g. for Miniflux
+
+```bash
+sudo su - miniflux
+systemctl --user stop pod-miniflux
+```
+TODO Probably need a one liner for this sort of task...
+
 
 ## Momod Shell Configuration
 
@@ -171,6 +200,17 @@ The setup play will run the momod-zsh-config role to set up a powerful and prett
 
 This role adds several useful aliases, see `roles/momod-zsh-config/files/dot-zshrc` for details.
 
+## Things to be aware of
+
+### Be careful adding more than 10 users
+
+To run rootless Podman containers requires assigning user namespace uid and gid for Podman to remap uid and gid inside the container to those on the container host. This is done per application, adding lines to /etc/subuid and /etc/subgid files via 'usermod'.
+
+Creating normal user accounts Ubuntu appears to assign uid/gid from 100000 upwards.
+Momod assigns uid/gid from 1000000 upwards.
+Thus if you add much more than 10 normal user accounts to the server (how many admins do you need?!) you may end up with a collision of uid/gid values.
+
+You can set the values Momod uses to avoid such a collision by redefining the default variables``` SERVICENAME_subuid_base`` set in ```roles/applications/defaults/main.yml```  in your group_vars or host_vars.
 
 ## Development
 
