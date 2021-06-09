@@ -23,8 +23,28 @@
   ansible.builtin.fetch:
     src: /etc/wireguard/publickey
     dest: ../../local/fetched
+
+- name: Register server private key
+  ansible.builtin.slurp:
+    src: /etc/wireguard/privatekey
+  register: server_wg_private_key
+  become: yes
+
+- name: Copy Wireguard config file to server
+  ansible.builtin.template:
+    src: momod0.conf.j2
+    dest: /etc/wireguard/momod0.conf
+    owner: root
+    group: root
+    mode: 0600
+  become: yes
 #
-# Create config file and upload
+# enable service with wg-quick
+# start serviec with wg-quick
+# check connection?
+
+#
 # Our local public key is needed?
 # Document manually copying to the momod/local folder
 # Have task check it exists
+#
