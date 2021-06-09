@@ -42,10 +42,8 @@ Currently testing with Qemu VM and a Vultr VPS. **(eventually)** Running on Lino
 There are some dependencies required for the Ansible control host you install Momod on:
 
 - [Ansible](https://github.com/ansible/ansible) obviously.
-- Wireguard
+- Wireguard, with public and private keys generated (detailed below)
 - Optionally the [Meslo Nerd Font](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k) if you use Zsh. For more information on the Zsh configuration see "Momod Shell Configuration" below.
-
-
 
 ### Project Layout
 
@@ -174,6 +172,25 @@ The main playbook is intended to do further setup. Update software, automatic so
 
 
 ## Enabling and Running applications
+
+### Generating Wireguard Keys
+
+If you've not previosly set up Wireguard, run these commands on your local Ansible control host (your desktop, laptop etc where you've installed Momod:
+
+```bash
+sudo -s
+cd /etc/wireguard
+umask 077
+wg genkey > privatekey
+wg pubkey < privatekey > publickey
+```
+This should leave you with something like this in /etc/wireguard:
+```bash
+.rw------- 45 root root  4 Jun 14:55  privatekey
+.rw------- 45 root root  4 Jun 14:55  publickey
+```
+
+If you've previously set up Wireguard and already have keys I leave it to you to make your setup fit with Momod...
 
 ### Enabling an application service
 
