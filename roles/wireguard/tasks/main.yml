@@ -1,0 +1,13 @@
+---
+# 'Wireguard' package (contains tools) is installed in the
+# common-packages role
+
+# Look for client keys and msg user if not present
+- name: Check Wireguard client keys have been generated
+  ansible.builtin.file:
+    path: /etc/wireguard/privatekey
+    state: file
+  become: yes
+# Generate server keys
+# backup server keys to fetched?
+

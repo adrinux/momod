@@ -1,2 +1,6 @@
 ---
 # Install haproxy
+- name: Install HAproxy
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
