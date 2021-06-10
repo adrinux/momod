@@ -11,7 +11,7 @@
     path: /etc/opendkim
     group: opendkim
     owner: opendkim
-    mode: 644
+    mode: 0644
 
 - name: Make sure the OpenDKIM key directories are present
   ansible.builtin.file:
@@ -19,7 +19,7 @@
     path: /etc/dkimkeys
     group: opendkim
     owner: opendkim
-    mode: 700
+    mode: 0700
 
 - name: Generate OpenDKIM keys
   ansible.builtin.command:
@@ -32,7 +32,7 @@
     dest: /etc/default/opendkim
     owner: root
     group: root
-    mode: 644
+    mode: 0644
 
 - name: Copy opendkim.conf into place
   ansible.builtin.template:
@@ -40,7 +40,7 @@
     dest: /etc/opendkim.conf
     owner: opendkim
     group: opendkim
-    mode: 644
+    mode: 0644
   notify:
     - restart opendkim
     - restart postfix
