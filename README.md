@@ -168,12 +168,21 @@ ssh 192.168.122.22
 
 ### Run the main playbook
 
-The main playbook is intended to do further setup. Update software, automatic software updates, security hardening (sshd, firewall, fail2ban), useful tools etc.
+The main playbook is intended to do further setup: update software; automatic software updates; security hardening (sshd, firewall, fail2ban), useful tools etc. On first run this will install a lot of packages - be patient!
 
+```bash
+ansible-playbook play/main.yml
+```
 
 ## Enabling and Running applications
 
-### Generating Wireguard Keys
+There is some preparation work to be done.
+
+### Setting up Wireguard on the server
+
+Running Momod's Wireguard roles will set this up automatically. Wireguard keys for the server are generated during a play/main.yml run then downloaded and can be found in your-momod/local/ directory tree. These are needed for the next step...
+
+### Setting up Wireguard on your client
 
 If you've not previosly set up Wireguard, run these commands on your local Ansible control host (your desktop, laptop etc where you've installed Momod:
 
@@ -190,7 +199,16 @@ This should leave you with something like this in /etc/wireguard:
 .rw------- 45 root root  4 Jun 14:55  publickey
 ```
 
-If you've previously set up Wireguard and already have keys I leave it to you to make your setup fit with Momod...
+(If you've previously set up Wireguard and already have keys I leave it to you to make your setup fit with Momod...)
+
+Next create a configuration file called momod0.conf and add the following contents, replacing with your generated keys as appropriate:
+
+```bash
+
+```
+
+
+
 
 ### Enabling an application service
 

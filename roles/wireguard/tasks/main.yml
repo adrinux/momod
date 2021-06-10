@@ -1,6 +1,10 @@
 ---
-# 'Wireguard' package (contains tools) is installed in the
-# common-packages role
+- name: Installing Wireguard package
+  ansible.builtin.apt:
+    pkg:
+      - wireguard
+    state: present
+    update_cache: yes
 
 - name: Generate Wireguard private key
   ansible.builtin.shell: umask 077; wg genkey > /etc/wireguard/privatekey
@@ -14,37 +18,12 @@
     creates: /etc/wireguard/publickey
   become: yes
 
-- name: Backup the private key to your momod/local/fetched directory
+- name: Backup the server Wireguard private key to momod/local/fetched
   ansible.builtin.fetch:
     src: /etc/wireguard/privatekey
     dest: ../../local/fetched
 
-- name: Backup the public key to your momod/local/fetched directory
+- name: Backup the server public Wireguard key to momod/local/fetched
   ansible.builtin.fetch:
     src: /etc/wireguard/publickey
     dest: ../../local/fetched
-
-- name: Register server private key
-  ansible.builtin.slurp:
-    src: /etc/wireguard/privatekey
-  register: server_wg_private_key
-  become: yes
-
-- name: Copy Wireguard config file to server
-  ansible.builtin.template:
-    src: momod0.conf.j2
-    dest: /etc/wireguard/momod0.conf
-    owner: root
-    group: root
-    mode: 0600
-  become: yes
-#
-# enable service with wg-quick
-# start serviec with wg-quick
-# check connection?
-
-#
-# Our local public key is needed?
-# Document manually copying to the momod/local folder
-# Have task check it exists
-#

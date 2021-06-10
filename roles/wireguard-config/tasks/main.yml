@@ -1,0 +1,31 @@
+---
+# 'Wireguard' role installs the Wireguard tools package and pre-generates server side keys.
+
+- name: Register server Wireguard private key
+  ansible.builtin.slurp:
+    src: /etc/wireguard/privatekey
+  register: server_wg_private_key
+  become: yes
+
+- name: Register server Wireguard public key
+
+- name: Register the client Wireguard public key
+
+- name: Deploy Wireguard config for momod0 network to server
+  ansible.builtin.template:
+    src: momod0.conf.j2
+    dest: /etc/wireguard/momod0.conf
+    owner: root
+    group: root
+    mode: 0600
+  become: yes
+#
+# enable service with wg-quick
+# start serviec with wg-quick
+# check connection?
+
+# Document (and carry out) client wireguard setup in readme
+# Our local public key is needed?
+# Document manually copying to the momod/local folder
+# Have task check it exists
+#
