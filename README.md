@@ -184,7 +184,7 @@ Running Momod's Wireguard roles will set this up automatically. Wireguard keys f
 
 ### Setting up Wireguard on your client
 
-If you've not previosly set up Wireguard, run these commands on your local Ansible control host (your desktop, laptop etc where you've installed Momod:
+If you've not previosly set up Wireguard, run these commands on your local Ansible control host (your desktop, laptop etc where you've installed Momod) - from here on referred to as the Wireguard 'client':
 
 ```bash
 sudo -s
@@ -201,16 +201,37 @@ This should leave you with something like this in /etc/wireguard:
 
 (If you've previously set up Wireguard and already have keys I leave it to you to make your setup fit with Momod...)
 
-Next create a configuration file called momod0.conf and add the following contents, replacing with your generated keys as appropriate:
+Copy your client public key into the momod/local directory, location dependen on where you put your momod folder:
 
 ```bash
+mkdir -p /path-to-your-momod/local/files/wireguard
+sudo cp /etc/wireguard/publickey /path-to-your-momod/local/files/wireguard/client-publickey
+sudo chown yourself:yourself  /path-to-your-momod/local/files/wireguard/client-publickey
+```
+Next create a configuration file on your client machine at /etc/wireguard/momod0.conf and add the following contents, replacing with your generated keys as appropriate:
 
+```bash
+[Interface]
+Address = 10.30.0.2/24
+ListenPort = 51820
+PrivateKey = CLIENT-PRIVATE-KEY
+
+[Peer]
+PublicKey = SERVER-PUBLIC-KEY
+AllowedIPs = 10.30.0.0/24
+Endpoint = YOUR-SERVER-IP-ADDRESS:51820
+PersistentKeepalive = 60
+```
+
+Set permissions:
+
+```bash
+sudo chmod 600 /etc/wireguard/momod0.conf
 ```
 
 
 
-
-### Enabling an application service
+### Enabling an application servicec
 
 - Uncomment a service in the enabled_services list of your host_vars/servername.yml
 - Run the applications role

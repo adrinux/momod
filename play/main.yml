@@ -15,6 +15,7 @@
     - certbot-dns-gandi
     - postfix-send-only
     - podman
+    - wireguard
 
 - hosts: dev
   become: yes

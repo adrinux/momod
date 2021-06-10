@@ -7,9 +7,11 @@
   register: server_wg_private_key
   become: yes
 
-- name: Register server Wireguard public key
-
 - name: Register the client Wireguard public key
+  ansible.builtin.stat:
+    path: ../../local/files/wireguard/client-publickey
+    delegate_to: localhost
+  register: client_wg_public_key
 
 - name: Deploy Wireguard config for momod0 network to server
   ansible.builtin.template:
