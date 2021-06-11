@@ -180,7 +180,7 @@ There is some preparation work to be done.
 
 ### Setting up Wireguard on the server
 
-Running Momod's Wireguard roles will set this up automatically. Wireguard keys for the server are generated during a play/main.yml run then downloaded and can be found in your-momod/local/ directory tree. These are needed for the next step...
+Running Momod's Wireguard roles will set this up automatically. Wireguard keys for the server are generated during a play/main.yml then downloaded and can be found in your-momod/local/files/wireguard/ directory. These are needed for the next step.
 
 ### Setting up Wireguard on your client
 
@@ -229,9 +229,32 @@ Set permissions:
 sudo chmod 600 /etc/wireguard/momod0.conf
 ```
 
+Enable and start the Wireguard service on your client:
+
+```bash
+sudo systemctl enable wg-quick@momod0 
+sudo systemctl start wg-quick@momod0 
+```
+
+Check Wireguard status:
+
+```bash
+sudo wg
+```
+
+This will show the server details but not yet any transfered data, since we haven't started Wireguard on the server.
+
+### Applications preparation (& starting Wireguard on the server )
+
+Run the apps-prep play to prepare the filesystem, Wireguard etc for starting web applications.
+
+```bash
+ansible-playbook play/apps-prep.yml
+```
 
 
-### Enabling an application servicec
+
+### Enabling an application service
 
 - Uncomment a service in the enabled_services list of your host_vars/servername.yml
 - Run the applications role
