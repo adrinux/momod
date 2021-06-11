@@ -1,0 +1,16 @@
+---
+# Used to prepare application infrastructure
+- hosts: all
+  become: yes
+
+  pre_tasks:
+    # Where to store the bind mounted volumes of containers
+    - name: Create application data directory
+      ansible.builtin.file:
+        path: /data/momod
+        state: directory
+        mode: 0755
+
+  roles:
+    - wireguard-config
+    #- applications

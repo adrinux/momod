@@ -1,0 +1,6 @@
+---
+# Used when enabling an application
+- hosts: all
+  become: yes
+  roles:
+    - applications

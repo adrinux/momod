@@ -1,11 +1,4 @@
 ---
-# Where to store the bind mounted volumes on the docker hosts
-- name: Create application data directory
-  ansible.builtin.file:
-    path: /data/momod
-    state: directory
-    mode: 0755
-
 # Include tasks for enabled applications
 #
 - name: Check if Miniflux is enabled
