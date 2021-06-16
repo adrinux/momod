@@ -220,7 +220,6 @@ PrivateKey = CLIENT-PRIVATE-KEY
 PublicKey = SERVER-PUBLIC-KEY
 AllowedIPs = 10.30.0.0/24
 Endpoint = YOUR-SERVER-IP-ADDRESS:51820
-PersistentKeepalive = 60
 ```
 
 Set permissions:

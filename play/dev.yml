@@ -8,5 +8,5 @@
     #- certbot-dns-gandi
     #- podman
     - wireguard-config
-    - haproxy
+    #- haproxy
     #- applications
