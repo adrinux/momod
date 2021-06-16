@@ -6,7 +6,7 @@
   roles:
     #- geerlingguy.firewall
     #- certbot-dns-gandi
-    #- podman
+    - podman
     - wireguard-config
     #- haproxy
-    #- applications
+    - applications

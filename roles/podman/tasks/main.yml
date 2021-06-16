@@ -23,3 +23,8 @@
 #     name: podman
 #     enabled: yes
 #     state: started
+
+# - name: Add a Podman network for our Wireguard interface
+#   command:
+#     cmd: podman network create --subnet 10.30.0.0/16 --gateway 10.30.0.1 momod
+#   become: yes
