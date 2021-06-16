@@ -10,7 +10,7 @@
 
 - name: Set XDG_RUNTIME_DIR for miniflux user
   ansible.builtin.lineinfile:
-    line: "export XDG_RUNTIME_DIR=/run/user/{{ miniflux_subuid_base }}"
+    line: "export XDG_RUNTIME_DIR=/run/user/{{ miniflux_user_uid }}"
     path: /home/miniflux/.bashrc
     insertafter: EOF
     state: present
