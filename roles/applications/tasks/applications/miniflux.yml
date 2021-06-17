@@ -88,14 +88,17 @@
     group: miniflux
     mode: 0644
 
-# - name: Reread systemd configs
-#   ansible.builtin.systemd:
-#     daemon_reload: yes
+- name: Reread systemd configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    scope: user
+  become: true
+  become_user: miniflux
 
 - name: Enable & start miniflux pod container
   ansible.builtin.systemd:
     name: pod-miniflux
-    state: started
+    state: restarted
     enabled: yes
     scope: user
   become: true
@@ -106,7 +109,7 @@
 - name: Enable & start miniflux postgres db container
   ansible.builtin.systemd:
     name: container-miniflux-postgres
-    state: started
+    state: restarted
     enabled: yes
     scope: user
   become: true
@@ -117,7 +120,7 @@
 - name: Enable & start miniflux app container
   ansible.builtin.systemd:
     name: container-miniflux-app
-    state: started
+    state: restarted
     enabled: yes
     scope: user
   become: true
