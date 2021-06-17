@@ -1,5 +1,6 @@
 ---
-# 'Wireguard' role installs the Wireguard tools package and pre-generates server side keys.
+# 'Wireguard' role installs the Wireguard tools package and
+# pre-generates server side keys.
 # This role puts configuration into place and starts Wireguard on the server
 
 - name: Register server Wireguard private key
