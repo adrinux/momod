@@ -31,6 +31,7 @@ ExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-miniflux
 ExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-miniflux-app.ctr-id
 PIDFile=%t/container-miniflux-app.pid
 Type=forking
+KillMode=none
 
 [Install]
 WantedBy=multi-user.target default.target

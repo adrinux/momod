@@ -22,6 +22,7 @@ ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/pod-miniflux.pod-id 
 ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/pod-miniflux.pod-id
 PIDFile=%t/pod-miniflux.pid
 Type=forking
+KillMode=none
 
 [Install]
 WantedBy=multi-user.target default.target
