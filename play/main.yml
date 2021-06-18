@@ -14,8 +14,8 @@
     - fail2ban
     - certbot-dns-gandi
     - postfix-send-only
-    - podman
     - wireguard
+    - podman
 
 - hosts: dev
   become: yes
