@@ -71,6 +71,7 @@
     owner: miniflux
     group: miniflux
     mode: 0644
+# TODO register if this has changed
 
 - name: Copy miniflux-postgres systemd unit file into place
   ansible.builtin.template:
@@ -79,6 +80,7 @@
     owner: miniflux
     group: miniflux
     mode: 0644
+# TODO register if this has changed
 
 - name: Copy miniflux-app systemd unit file into place
   ansible.builtin.template:
@@ -87,6 +89,7 @@
     owner: miniflux
     group: miniflux
     mode: 0644
+# TODO register if this has changed
 
 - name: Reread systemd configs
   ansible.builtin.systemd:
@@ -94,6 +97,7 @@
     scope: user
   become: true
   become_user: miniflux
+# TODO read register and only do this if service file has changed
 
 - name: Enable & start miniflux pod container
   ansible.builtin.systemd:
@@ -105,6 +109,7 @@
   become_user: miniflux
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+# TODO read register and only restart if service file has changed
 
 - name: Enable & start miniflux postgres db container
   ansible.builtin.systemd:
@@ -116,6 +121,7 @@
   become_user: miniflux
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+# TODO read register and only restart if service file has changed
 
 - name: Enable & start miniflux app container
   ansible.builtin.systemd:
@@ -127,3 +133,4 @@
   become_user: miniflux
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+# TODO read register and only restart if service file has changed
