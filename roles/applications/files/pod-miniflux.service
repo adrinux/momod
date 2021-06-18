@@ -16,7 +16,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/pod-miniflux.pid %t/pod-miniflux.pod-id
-ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/pod-miniflux.pid --pod-id-file %t/pod-miniflux.pod-id --name miniflux --publish 8080:8080 --replace
+ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/pod-miniflux.pid --pod-id-file %t/pod-miniflux.pod-id --name miniflux --network=none --replace
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/pod-miniflux.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/pod-miniflux.pod-id -t 10
 ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/pod-miniflux.pod-id
