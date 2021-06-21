@@ -1,4 +1,15 @@
 ---
+# Include tasks for essential applications
+- name: Check if haproxy is enabled
+  set_fact:
+    haproxy_enabled: true
+  loop: "{{ lookup('list', enabled_services) }}"
+  when: "'haproxy' in item"
+
+- name: Add haproxy pod
+  include_tasks: applications/haproxy.yml
+  when: haproxy_enabled|default(false) == true
+
 # Include tasks for enabled applications
 #
 - name: Check if Miniflux is enabled
@@ -9,7 +20,7 @@
 
 - name: Add Miniflux feed reader pod
   include_tasks: applications/miniflux.yml
-  when: miniflux_enabled == true
+  when: miniflux_enabled|default(false) == true
 #
 #
 #

@@ -7,6 +7,6 @@
     #- geerlingguy.firewall
     #- certbot-dns-gandi
     #- podman
-    - wireguard-config
+    #- wireguard-config
     #- haproxy
     - applications

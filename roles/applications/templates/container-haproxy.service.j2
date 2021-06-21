@@ -1,0 +1,29 @@
+# container-haproxy.service
+
+[Unit]
+Description=Podman container-haproxy.service
+Documentation=man:podman-generate-systemd(1)
+Wants=network.target
+After=network-online.target
+RequiresMountsFor=/home/podhaproxy/.local/share/containers/storage /run/user/"{{ podhaproxy_user_uid }}"/containers
+BindsTo=pod-haproxy.service
+After=pod-haproxy.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-haproxy.pid %t/container-haproxy.ctr-id
+ExecStart=/usr/bin/podman container run --conmon-pidfile %t/container-haproxy.pid --cidfile %t/container-haproxy.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-haproxy.pod-id --replace \
+--name haproxy-app \
+--restart=on-failure:5 \
+--detach=True nginx
+#--detach=True docker.io/haproxy/haproxy:latest
+ExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-haproxy.ctr-id -t 10
+ExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-haproxy.ctr-id
+PIDFile=%t/container-haproxy.pid
+Type=forking
+KillMode=none
+
+[Install]
+WantedBy=multi-user.target default.target

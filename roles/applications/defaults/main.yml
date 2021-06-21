@@ -1,5 +1,6 @@
 ---
 enabled_services:
+  - haproxy
 #- miniflux
 #- kanboard
 #- wallabag
@@ -44,15 +45,17 @@ miniflux_postgres_password:
 
 # Might need to change, kept here to avoid collisions when
 # adding new services
-miniflux_subuid_base: 1000000
-radicale_subuid_base: 1065536
-kanboard_subuid_base: 1131072
-vikunja_subuid_base: 1196608
-wallabag_subuid_base: 1262144
+podhaproxy_subuid_base: 1000000
+miniflux_subuid_base: 1065536
+radicale_subuid_base: 1131072
+kanboard_subuid_base: 1196608
+vikunja_subuid_base: 1262144
+wallabag_subuid_base: 1327680
 # Increment by 65536 for a new entry
 
 # Should not need to be changed, kept hear to avoid collisions
 # when creating new services
+podhaproxy_user_uid: 6000
 miniflux_user_uid: 6001
 radicale_user_uid: 6002
 kanboard_user_uid: 6003
