@@ -1,0 +1,136 @@
+---
+- name: Add System user to run Miniflux with
+  ansible.builtin.user:
+    name: miniflux
+    uid: "{{ miniflux_user_uid }}"
+    password: "*"
+    shell: /usr/bin/bash
+    state: present
+    system: yes
+
+- name: Set XDG_RUNTIME_DIR for miniflux user
+  ansible.builtin.lineinfile:
+    line: "export XDG_RUNTIME_DIR=/run/user/{{ miniflux_user_uid }}"
+    path: /home/miniflux/.bashrc
+    insertafter: EOF
+    state: present
+
+# Use command for this until the Ansible user module
+# supports subuid and subgid see github issue:
+# https://github.com/ansible/ansible/issues/68199
+- name: Check for pre-existing subuid definition for miniflux
+  ansible.builtin.shell: "cat /etc/subuid"
+  become: yes
+  register: subuid_contents
+
+- name: Assign subuid range to miniflux user
+  ansible.builtin.command: "usermod -v {{ miniflux_subuid_base }}-{{ miniflux_subuid_base + 65536 }} -w {{ miniflux_subuid_base }}-{{ miniflux_subuid_base + 65536 }} miniflux"
+  become: yes
+  when: '"miniflux" not in subuid_contents.stdout'
+
+# These subuid/subguid changes aren't picked up by podman without reboot
+# Running 'podman system migrate' seems to help
+# See https://github.com/containers/podman/issues/3421#issuecomment-544455837
+- name: Nudge Podman into seeing subuid/gid changes
+  ansible.builtin.command: podman system migrate
+  become: yes
+  become_user: miniflux
+  when: '"miniflux" not in subuid_contents.stdout'
+
+- name: Check linger is enabled for miniflux user
+  ansible.builtin.stat:
+    path: "/var/lib/systemd/linger/miniflux"
+  register: miniflux_linger
+
+- name: Enable-linger for miniflux
+  ansible.builtin.command: "loginctl enable-linger miniflux"
+  when: not miniflux_linger.stat.exists
+
+# Use podman secret to store db user/password?
+
+- name: Create directory for Miniflux database
+  ansible.builtin.file:
+    path: /data/momod/miniflux-postgres/13
+    state: directory
+    owner: miniflux
+    group: miniflux
+    mode: 0755
+
+- name: Create miniflux user systemd directory
+  ansible.builtin.file:
+    path: /home/miniflux/.config/systemd/user/
+    state: directory
+    owner: miniflux
+    group: miniflux
+    mode: 0755
+
+- name: Copy pod-miniflux systemd unit file into place
+  ansible.builtin.copy:
+    src: files/pod-miniflux.service
+    dest: /home/miniflux/.config/systemd/user/pod-miniflux.service
+    owner: miniflux
+    group: miniflux
+    mode: 0644
+# TODO register if this has changed
+
+- name: Copy miniflux-postgres systemd unit file into place
+  ansible.builtin.template:
+    src: templates/container-miniflux-postgres.service.j2
+    dest: /home/miniflux/.config/systemd/user/container-miniflux-postgres.service
+    owner: miniflux
+    group: miniflux
+    mode: 0644
+# TODO register if this has changed
+
+- name: Copy miniflux-app systemd unit file into place
+  ansible.builtin.template:
+    src: templates/container-miniflux-app.service.j2
+    dest: /home/miniflux/.config/systemd/user/container-miniflux-app.service
+    owner: miniflux
+    group: miniflux
+    mode: 0644
+# TODO register if this has changed
+
+- name: Reread systemd configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    scope: user
+  become: true
+  become_user: miniflux
+# TODO read register and only do this if service file has changed
+
+- name: Enable & start miniflux pod container
+  ansible.builtin.systemd:
+    name: pod-miniflux
+    state: restarted
+    enabled: yes
+    scope: user
+  become: true
+  become_user: miniflux
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+# TODO read register and only restart if service file has changed
+
+- name: Enable & start miniflux postgres db container
+  ansible.builtin.systemd:
+    name: container-miniflux-postgres
+    state: restarted
+    enabled: yes
+    scope: user
+  become: true
+  become_user: miniflux
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+# TODO read register and only restart if service file has changed
+
+- name: Enable & start miniflux app container
+  ansible.builtin.systemd:
+    name: container-miniflux-app
+    state: restarted
+    enabled: yes
+    scope: user
+  become: true
+  become_user: miniflux
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ miniflux_user_uid }}"
+# TODO read register and only restart if service file has changed
