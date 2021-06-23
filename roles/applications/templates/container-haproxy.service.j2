@@ -5,7 +5,7 @@ Description=Podman container-haproxy.service
 Documentation=man:podman-generate-systemd(1)
 Wants=network.target
 After=network-online.target
-RequiresMountsFor=/home/podhaproxy/.local/share/containers/storage /run/user/"{{ podhaproxy_user_uid }}"/containers
+RequiresMountsFor=
 BindsTo=pod-haproxy.service
 After=pod-haproxy.service
 

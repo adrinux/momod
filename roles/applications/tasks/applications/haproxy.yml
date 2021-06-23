@@ -1,93 +1,28 @@
 ---
-- name: Add System user to run haproxy pod with
-  ansible.builtin.user:
-    name: podhaproxy
-    uid: "{{ podhaproxy_user_uid }}"
-    password: "*"
-    shell: /usr/bin/bash
-    state: present
-    system: yes
-
-- name: Set XDG_RUNTIME_DIR for podhaproxy user
-  ansible.builtin.lineinfile:
-    line: "export XDG_RUNTIME_DIR=/run/user/{{ podhaproxy_user_uid }}"
-    path: /home/podhaproxy/.bashrc
-    insertafter: EOF
-    state: present
-
-# Use command for this until the Ansible user module
-# supports subuid and subgid see github issue:
-# https://github.com/ansible/ansible/issues/68199
-- name: Check for pre-existing subuid definition for podhaproxy
-  ansible.builtin.shell: "cat /etc/subuid"
-  become: yes
-  register: subuid_contents
-
-- name: Assign subuid range to podhaproxy user
-  ansible.builtin.command: "usermod -v {{ podhaproxy_subuid_base }}-{{ podhaproxy_subuid_base + 65536 }} -w {{ podhaproxy_subuid_base }}-{{ podhaproxy_subuid_base + 65536 }} podhaproxy"
-  become: yes
-  when: '"podhaproxy" not in subuid_contents.stdout'
-
-# These subuid/subguid changes aren't picked up by podman without reboot
-# Running 'podman system migrate' seems to help
-# See https://github.com/containers/podman/issues/3421#issuecomment-544455837
-- name: Nudge Podman into seeing subuid/gid changes
-  ansible.builtin.command: podman system migrate
-  become: yes
-  become_user: podhaproxy
-  when: '"podhaproxy" not in subuid_contents.stdout'
-
-- name: Check linger is enabled for podhaproxy user
-  ansible.builtin.stat:
-    path: "/var/lib/systemd/linger/podhaproxy"
-  register: podhaproxy_linger
-
-- name: Enable-linger for podhaproxy
-  ansible.builtin.command: "loginctl enable-linger podhaproxy"
-  when: not podhaproxy_linger.stat.exists
-
 # Use podman secret to store db user/password?
-
-# - name: Create directory for haproxy config
-#   ansible.builtin.file:
-#     path: /data/momod/pod-haproxy
-#     state: directory
-#     owner: podhaproxy
-#     group: podhaproxy
-#     mode: 0755
-
-- name: Create podhaproxy user systemd directory
-  ansible.builtin.file:
-    path: /home/podhaproxy/.config/systemd/user/
-    state: directory
-    owner: podhaproxy
-    group: podhaproxy
-    mode: 0755
 
 - name: Copy pod-haproxy systemd unit file into place
   ansible.builtin.copy:
     src: files/pod-haproxy.service
-    dest: /home/podhaproxy/.config/systemd/user/pod-haproxy.service
-    owner: podhaproxy
-    group: podhaproxy
+    dest: /etc/systemd/system/pod-haproxy.service
+    owner: root
+    group: root
     mode: 0644
 # TODO register if this has changed
 
 - name: Copy haproxy app systemd unit file into place
   ansible.builtin.template:
     src: templates/container-haproxy.service.j2
-    dest: /home/podhaproxy/.config/systemd/user/container-haproxy.service
-    owner: podhaproxy
-    group: podhaproxy
+    dest: /etc/systemd/system/container-haproxy.service
+    owner: root
+    group: root
     mode: 0644
 # TODO register if this has changed
 
 - name: Reread systemd configs
   ansible.builtin.systemd:
     daemon_reload: yes
-    scope: user
   become: true
-  become_user: podhaproxy
 # TODO read register and only do this if service file has changed
 
 - name: Enable & start haproxy pod container
@@ -95,11 +30,7 @@
     name: pod-haproxy
     state: restarted
     enabled: yes
-    scope: user
   become: true
-  become_user: podhaproxy
-  environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ podhaproxy_user_uid }}"
 # TODO read register and only restart if service file has changed
 
 - name: Enable & start haproxy app container
@@ -107,9 +38,5 @@
     name: container-haproxy
     state: restarted
     enabled: yes
-    scope: user
   become: true
-  become_user: podhaproxy
-  environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ podhaproxy_user_uid }}"
 # TODO read register and only restart if service file has changed
