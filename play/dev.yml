@@ -9,4 +9,4 @@
     #- podman
     - wireguard-config
     #- haproxy
-    #- applications
+    - applications

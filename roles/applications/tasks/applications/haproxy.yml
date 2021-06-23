@@ -10,7 +10,7 @@
     mode: 0644
 # TODO register if this has changed
 
-- name: Copy haproxy app systemd unit file into place
+- name: Copy container-haproxy app systemd unit file into place
   ansible.builtin.template:
     src: templates/container-haproxy.service.j2
     dest: /etc/systemd/system/container-haproxy.service
