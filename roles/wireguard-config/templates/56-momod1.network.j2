@@ -1,0 +1,16 @@
+[Match]
+Name = momod0
+
+[Network]
+Description = Momod VPN
+# If you need multiple addresses, e.g. for IPv4 and 6,
+# use multiple Address lines.
+Address = 10.30.30.1
+
+[RoutingPolicyRule]
+From = 10.30.30.0/24
+Table = 303
+
+[Route]
+Gateway = 10.30.30.1/24
+Table = 303

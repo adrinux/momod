@@ -1,8 +1,0 @@
-[Interface]
-Address = 10.30.0.1/32
-ListenPort = 51820
-PrivateKey = {{ server_wg_private_key.content | b64decode }}
-
-[Peer]
-PublicKey = {{ client_wg_public_key.content | b64decode }}
-AllowedIPs = 10.30.0.2/24
