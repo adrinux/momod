@@ -4,7 +4,6 @@
 - hosts: testing
   become: yes
   roles:
-    - powerdns.pdns_recursor
     #- geerlingguy.firewall
     #- certbot-dns-gandi
     #- podman

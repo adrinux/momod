@@ -23,14 +23,3 @@ timezone: "Europe/London"
 
 # Use python3 on managed hosts
 ansible_python_interpreter: /usr/bin/python3
-
-# PowerDNS Caching nameserver (pdns-recursor)
-pdns_rec_config:
-  allow-from:
-    - "127.0.0.0/8"
-    - "10.0.0.0/8"
-    - "192.168.0.0/16"
-    - "172.16.0.0/12"
-    - "::1/128"
-    - "fe80::/10"
-  local-address: "{{ ansible_default_ipv4['address'] }}:53"
