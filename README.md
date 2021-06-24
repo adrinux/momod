@@ -5,15 +5,19 @@
 
 - Sets up user accounts (with a great zsh prompt).
 - Configures hostname, timezone, unattended upgrades.
+
+Going backwards a little at the moment. Stripping out some legacy functionality I'd added out of habit and modernizing.
+
+**WIP**
+- Replace geerlingguy.firewall role with something built in to Ubuntu hirsute server, either UFW or Firewalld.
+
+**Next**
 - Hardens ssh, adds a firewall installs fail2ban.
-- Installs a caching DNS nameserver
 - Installs nginx webserver
 - Installs and sets up a send-only configuration of postfix.
 - Can set up Letsencrypt wildcard certificates via Gandi DNS
 - Installs Podman
 - Can launch a Miniflux feed reader podman pod
-
-**Next**
 - Set up up a reverse proxy for https for all services and easy to remember URLs eg miniflux.momod.com
 - Set up wireguard
 - Set up a vpn connection between host and server
