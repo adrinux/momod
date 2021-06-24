@@ -8,7 +8,6 @@
     - sshd
     - common-packages
     - nginx-config
-    - geerlingguy.firewall
     - sysctl
     - fail2ban
     - certbot-dns-gandi

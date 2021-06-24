@@ -2,7 +2,6 @@
 collections:
   - name: ansible.posix
   #- name: nginxinc.nginx_core
-
 # Roles from Ansible Galaxy
-roles:
-  - src: geerlingguy.firewall
+#roles:
+#  - src: example.name
