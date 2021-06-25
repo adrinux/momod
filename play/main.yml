@@ -6,14 +6,15 @@
     - apt
     - unattended-upgrades
     - sshd
+    - firewalld
     - common-packages
-    - nginx-config
     - sysctl
-    - fail2ban
-    - certbot-dns-gandi
-    - postfix-send-only
-    - wireguard
-    - podman
+    #- fail2ban
+    #- certbot-dns-gandi
+    #- postfix-send-only
+    #- nginx-config
+    #- wireguard
+    #- podman
 
 - hosts: dev
   become: yes

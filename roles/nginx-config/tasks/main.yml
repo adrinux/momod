@@ -30,3 +30,15 @@
   changed_when: False
   notify:
     - restart nginx
+
+- name: Open http port on firewall via Firewalld
+  ansible.posix.firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+- name: Open https port on firewall via Firewalld
+  ansible.posix.firewalld:
+    service: https
+    permanent: yes
+    state: enabled

@@ -1,4 +1,10 @@
 ---
+- name: Open smtp port on firewall via Firewalld
+  ansible.posix.firewalld:
+    service: smtp
+    permanent: yes
+    state: enabled
+
 - name: Set /etc/mailname to fqdn
   ansible.builtin.template:
     src: "etc-mailname.j2"

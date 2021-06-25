@@ -1,0 +1,25 @@
+---
+- name: Install Firewalld Dynamic firewall manager
+  ansible.builtin.apt:
+    pkg:
+      - firewalld
+    state: present
+    update_cache: yes
+
+- name: Disable UFW
+  ansible.builtin.service:
+    name: ufw
+    state: stopped
+    enabled: false
+
+- name: Uninstall UFW
+  ansible.builtin.apt:
+    pkg:
+      - ufw
+    state: absent
+
+- name: Enable & start Firewalld
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: true
