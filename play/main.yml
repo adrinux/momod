@@ -13,8 +13,8 @@
     - certbot-dns-gandi
     - postfix-send-only
     - nginx-config
-    #- wireguard
-    #- podman
+    - wireguard
+    - podman
 
 - hosts: dev
   become: yes

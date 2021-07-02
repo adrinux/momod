@@ -4,8 +4,6 @@
 - hosts: testing
   become: yes
   roles:
-    #- certbot-dns-gandi
-    #- podman
     - wireguard-config
     #- haproxy
     #- applications
