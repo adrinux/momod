@@ -229,17 +229,34 @@ AllowedIPs = 10.30.0.0/24
 Endpoint = YOUR-SERVER-IP-ADDRESS:51820
 ```
 
+And a second conf file for our second Wireguard interface:
+
+```bash
+[Interface]
+Address = 172.30.0.2/24
+ListenPort = 51821
+PrivateKey = CLIENT-PRIVATE-KEY
+
+[Peer]
+PublicKey = SERVER-PUBLIC-KEY
+AllowedIPs = 172.30.0.0/24
+Endpoint = YOUR-SERVER-IP-ADDRESS:51821
+```
+
 Set permissions:
 
 ```bash
 sudo chmod 600 /etc/wireguard/momod0.conf
+sudo chmod 600 /etc/wireguard/momod1.conf
 ```
 
 Enable and start the Wireguard service on your client:
 
 ```bash
-sudo systemctl enable wg-quick@momod0 
-sudo systemctl start wg-quick@momod0 
+sudo systemctl enable wg-quick@momod0
+sudo systemctl start wg-quick@momod0
+sudo systemctl enable wg-quick@momod1
+sudo systemctl start wg-quick@momod1
 ```
 
 Check Wireguard status:
