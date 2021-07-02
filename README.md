@@ -178,6 +178,9 @@ The main playbook is intended to do further setup: update software; automatic so
 ansible-playbook play/main.yml
 ```
 
+TODO: Document Postfix related DNS entries (DKIM etc).
+
+
 ## Enabling and Running applications
 
 There is some preparation work to be done.
