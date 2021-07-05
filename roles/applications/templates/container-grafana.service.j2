@@ -1,0 +1,29 @@
+# container-grafana.service
+
+[Unit]
+Description=Podman container-grafana.service
+Documentation=man:podman-generate-systemd(1)
+Wants=network.target
+After=network-online.target
+RequiresMountsFor=
+BindsTo=pod-grafana.service
+After=pod-grafana.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-grafana.pid %t/container-grafana.ctr-id
+ExecStart=/usr/bin/podman container run --conmon-pidfile %t/container-grafana.pid --cidfile %t/container-grafana.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-grafana.pod-id --replace \
+--name grafana-app \
+--restart=on-failure:3 \
+--expose 3000 \
+--detach=True docker.io/grafana/grafana
+ExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-grafana.ctr-id -t 10
+ExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-grafana.ctr-id
+PIDFile=%t/container-grafana.pid
+Type=forking
+KillMode=none
+
+[Install]
+WantedBy=multi-user.target default.target

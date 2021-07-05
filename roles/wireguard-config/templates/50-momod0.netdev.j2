@@ -6,8 +6,6 @@ Description = Momod VPN
 [WireGuard]
 PrivateKey = {{ server_wg_private_key.content | b64decode }}
 ListenPort = 51820
-PostUp     = firewall-cmd --zone=public --add-port 51820/udp && firewall-cmd --zone=public --add-masquerade
-PostDown   = firewall-cmd --zone=public --remove-port 51820/udp && firewall-cmd --zone=public --remove-masquerade
 
 [WireGuardPeer]
 PublicKey = {{ client_wg_public_key.content | b64decode }}

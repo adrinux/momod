@@ -60,3 +60,16 @@
   ansible.builtin.systemd:
     name: systemd-networkd
     state: restarted
+
+
+- name: Open Wireguard ports on firewall via Firewalld
+  ansible.posix.firewalld:
+    port: 51820-51821/udp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+# Need to open up firewall
+#firewall-cmd --zone=public --add-port 51820/udp
+#firewall-cmd --zone=public --add-port 51821/udp
+

@@ -1,0 +1,50 @@
+---
+# Use podman secret to store db user/password?
+
+- name: Create directory for Grafana
+  ansible.builtin.file:
+    path: /data/momod/grafana
+    state: directory
+    owner: "{{ app_services_user }}"
+    group: "{{ app_services_user }}"
+    mode: 0755
+
+- name: Copy pod-grafana systemd unit file into place
+  ansible.builtin.copy:
+    src: files/pod-grafana.service
+    dest: /etc/systemd/system/pod-grafana.service
+    owner: root
+    group: root
+    mode: 0644
+# TODO register if this has changed
+
+- name: Copy container-grafana systemd unit file into place
+  ansible.builtin.template:
+    src: templates/container-grafana.service.j2
+    dest: /etc/systemd/system/container-grafana.service
+    owner: "{{ app_services_user }}"
+    group: "{{ app_services_user }}"
+    mode: 0644
+# TODO register if this has changed
+
+- name: Reread systemd configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+#  become: true
+# TODO read register and only do this if service file has changed
+
+- name: Enable & start Grafana pod container
+  ansible.builtin.systemd:
+    name: pod-grafana
+    state: restarted
+    enabled: yes
+#  become: true
+# TODO read register and only restart if service file has changed
+
+- name: Enable & start grafana app container
+  ansible.builtin.systemd:
+    name: container-grafana
+    state: restarted
+    enabled: yes
+#  become: true
+# TODO read register and only restart if service file has changed
