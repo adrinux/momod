@@ -3,6 +3,7 @@
   ansible.posix.firewalld:
     service: smtp
     permanent: yes
+    immiediate: yes
     state: enabled
 
 - name: Set /etc/mailname to fqdn
