@@ -1,12 +1,13 @@
 ---
 enabled_services:
-  - grafana
-#  - haproxy
+  - haproxy
 #- miniflux
 #- kanboard
 #- wallabag
 #- radicale
 #- vikunja
+#- grafana
+
 
 # Which user owns the container data in bind mounts
 app_services_user: "root"

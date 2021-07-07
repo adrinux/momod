@@ -1,5 +1,4 @@
 ---
-# Use podman secret to store db user/password?
 
 - name: Create directory for Grafana
   ansible.builtin.file:

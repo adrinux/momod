@@ -11,6 +11,7 @@
   when: haproxy_enabled|default(false) == true
 
 
+# Include tasks for Admin applications
 - name: Check if Grafana is enabled
   set_fact:
     grafana_enabled: true
@@ -21,8 +22,8 @@
   include_tasks: applications/grafana.yml
   when: grafana_enabled|default(false) == true
 
+
 # Include tasks for enabled applications
-#
 - name: Check if Miniflux is enabled
   set_fact:
     miniflux_enabled: true
